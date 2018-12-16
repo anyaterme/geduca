@@ -1,0 +1,49 @@
+{% load i18n utils_tags %}
+
+{% if theme %}
+	<div id="theme_name_no_edit">
+		<h2> 
+			{{ theme.name }} 
+			<small></span><a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="theme_name_edit_link" title="{% trans "Editar Nombre" %}"><span  title="{% trans "Editar Nombre" %}"   class="glyphicon glyphicon-edit"></span></a>
+			<!--</span><a href="{% url "download" theme.id 'theme_template' %}" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;"  title="{% trans "Descargar Tema" %}"  id="theme_download"><span class="glyphicon glyphicon-download"  title="{% trans "Descargar Tema" %}" ></span></a>-->
+			</span><a href="{% url "download" theme.id 'theme_template_new' %}" class="btn btn-primary btn-xs"  style="font-size:0.8em;color:white;"  title="{% trans "Descargar Tema Nuevo" %}"  id="theme_download_new"><span class="glyphicon glyphicon-download"  title="{% trans "Descargar Tema Nuevo" %}" ></span></a>
+		</small></h2>
+	</div>
+	<div id="theme_download_frame" style="display: none;">
+	</div>
+	<div id="theme_name_edit" style="display: none;">
+		<form method='post' action='{% url "save_theme" %}' class='form-inline' id='theme_name_form'> 
+			{% csrf_token %} 
+			<input type='text' class='form-control' id='name' name='name' placeholder='Nombre del tema' value='{{ theme.name }}'> 
+			<input type='hidden' value='{{ theme.id }}' name='theme_id' id='id_theme'/> 
+			<input type='hidden' value='{{ course.id }}' name='course_id' id='id_course'/> 
+			<input type='submit' value='Guardar' name='submit' class='btn btn-primary'/> 
+		</form> 
+	</div>
+{% else %}
+	<form method="post" action="{% url "save_theme" %}" class="form-inline" id="theme_name_form"> 
+		{% csrf_token %}
+		<input type="text" class="form-control" id="name" name="name" placeholder="Nombre del tema">
+		<input type="hidden" value="{{ course.id }}" name="course_id" id="id_course"/>
+		<input type="submit" value="{% trans "Crear tema" %}" name="submit" class="btn btn-primary"/>
+	</form>
+{% endif %}
+
+<script>
+	/*$('#theme_name_form').submit(function() { // catch the form's submit event
+		$.ajax({ // create an AJAX call...
+			data: $(this).serialize(), // get the form data
+			type: $(this).attr('method'), // GET or POST
+			url: $(this).attr('action'), // the file to call
+			success: function(response) { // on success..
+				$('#theme_name_frame').html(response); // update the DIV
+			}
+		});
+		return false;
+	});*/
+
+	$('#theme_name_edit_link').click(function() {
+		$('#theme_name_no_edit').hide();
+		$('#theme_name_edit').show();
+	});
+</script>

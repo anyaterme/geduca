@@ -1,0 +1,25 @@
+{% load filters %}
+
+<html>	
+	<head>
+	</head>
+	<body>
+		<h2 style="color:#5bc0de">{{ message.course.category }} :   {{ message.course.name  }}</h2>
+		<p>
+		 	<strong>{{ message.author }}</strong> Ha escrito un nuevo mensaje en el curso. <br>
+
+			<blockquote>"{{ message.subject }}"</blockquote>
+
+			{% if not  message.message_files.all|is_empty %}	
+				(<small><i> El mensaje contiene archivos adjuntos </i></small>)
+			{% else %}
+				(<small><i> El mensaje no contiene archivos adjuntos </i></small>)
+			{% endif %}
+
+			<br><br>Para ir al curso pulse : 	http://{{ site.domain }}{% url "course_details" message.course.id  %}<br>
+		   <hr/>
+			<small>Este es un mensaje de correro automaitzado para informarle de actualizaciones en la plataforma , no responda a este email.</small>
+		</p>
+	</body>
+
+</html>

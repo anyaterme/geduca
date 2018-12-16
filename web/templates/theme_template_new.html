@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="es">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link href="../css/reset/reset.css" rel="stylesheet" type="text/css">
+	<link href="../css/estilo.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="../shadowbox/shadowbox.css" rel="stylesheet" type="text/css"/>
+	<link href="../css/estilo_print.css" rel="stylesheet" type="text/css" media="print">
+	<script language="JavaScript" src="../javascript/highlight.js"></script>
+	<script language="JavaScript" src="../javascript/overlib.js"></script>
+	<script language="JavaScript" src="../javascript/imprimir.js"></script>
+	<script type="text/javascript" src="../shadowbox/swfobject.js"></script>
+	<script type="text/javascript" src="../shadowbox/jquery.js"></script>
+	<script type="text/javascript" src="../shadowbox/shadowbox-jquery.js"></script>
+	<script type="text/javascript" src="../shadowbox/shadowbox.js"></script>-->
+
+	<link href="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/css/reset/reset.css" rel="stylesheet" type="text/css">
+	<link href="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/css/estilo.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/shadowbox/shadowbox.css" rel="stylesheet" type="text/css"/>
+	<link href="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/css/estilo_print.css" rel="stylesheet" type="text/css" media="print">
+	<script language="JavaScript" src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/javascript/highlight.js"></script>
+	<script language="JavaScript" src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/javascript/overlib.js"></script>
+	<script language="JavaScript" src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/javascript/imprimir.js"></script>
+	<script type="text/javascript" src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/shadowbox/swfobject.js"></script>
+	<script type="text/javascript" src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/shadowbox/jquery.js"></script>
+	<script type="text/javascript" src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/shadowbox/shadowbox-jquery.js"></script>
+	<script type="text/javascript" src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/shadowbox/shadowbox.js"></script>
+
+	<title>{{theme.name}}</title>
+	<script type="text/javascript" src="http://www3.gobiernodecanarias.org/educacion/cau_ce/estadisticasweb/scripts/piwik-base.js"></script><script type="text/javascript" src="http://www3.gobiernodecanarias.org/educacion/cau_ce/estadisticasweb/scripts/piwik-campus2.js"></script></head>
+
+	<style>
+		#tdContenido img
+		{
+			max-width:500px;
+		}
+	</style>
+<body id="bd">
+	<div id="overDiv"></div> <!-- Inicia overlib -->
+	<a name="inicio"></a> <!-- Referencia de inicio -->	
+	<div id="containerDiv"> <!-- Contenedor Principal -->
+		<div id="headerDiv"> <!-- Zona de cabecera -->
+			<table border="0" align="center" cellpadding="0" cellspacing="0" id="header">
+				<tr>
+					<td id="tdHeaderIzq" align="right" valign="middle" width="223"> <!-- ZONA IZQUIERDA -->
+						&nbsp;
+					</td>
+					<td id="tdHeaderCen" align="center" valign="middle"> <!-- ZONA CENTRAL -->		
+						<div id="tituloPrincipal">      
+							<span id="tema">{{theme.name}}</span>
+						</div>	
+					</td>
+					<td id="tdHeaderDer" width="271" align="right" valign="middle">
+						<img src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/images/educacion.png" style="width:256px; margin-right:15px;">
+						{#img src="http://www3.gobiernodecanarias.org/medusa/campus/doc/boletin/5/logo.jpg" style="width:256px; margin-right:15px;">#}
+					</td>
+				</tr>
+			</table> 
+		</div>
+		<div id="contentDiv"> <!-- Zona de contenido -->
+			<table width="100%" border="0" align="center" cellpadding="20" cellspacing="0" id="mainTable">
+				<tr> 	
+					<td valign="top" id="sidebar"> <!-- ZONA DE CONTENIDOS -->
+						{% comment %}
+						<div style="position:fixed; top:10px; width:170px; height:70px; padding: 5px 5px 5px 5px;background-image:url(./imgs/logo.png); text-align:center;">
+							<p style="margin:0 0 0 0; line-height:24px; font-size:24px; font-weight:bold; color:#000000;">
+								{{theme.course}}
+							</p>
+							<p style="margin:5px 0 0 0; padding-top: 0px; line-height:18px; font-size:18px; font-weight:bold; color:#FF6600;">
+								{{theme.name}}
+							</p>
+						</div>
+						{% endcomment %}
+
+						<div class="fijo" {% if theme.chapter_set.all|length > 10 %} style="height:600px; overflow:scroll;" {% endif %}>
+							<div id="buscador">
+								<form action="" method="post" name="formulario" id="formulario" onSubmit="javascript:searchPrompt(textoabuscar.value, false);">
+									<p><input name="textoabuscar" type="text" class="textarea"></p>
+									<p style="margin-top:5px;"><input type="image" value="submit" src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/images/general/buscar.png" name="buscar" width="55" height="20" id="buscar" ></p>
+									<p style="margin-top:-20px; margin-left:60px;"><a href="javascript:void(0);" onClick="javascript:window.location.reload(false);"><img src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/images/general/limpiar.png" style="width:52px; height:20px;"></a></p>
+								</form>
+							</div>
+
+							<h1><img src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/images/general/indice.gif" width="16" height="16">&nbsp;Contenidos</h1>
+							<ul> 
+								<!-- IMPRESION -->
+								<li>
+									<a class="impri" href="javascript:impresion();" 
+										onMouseOver="mostrar('Adapta el formato de la p&aacute;gina para imprimirlo de forma comprensible, eliminando men&uacute;s y fondos innecesarios.', 'Imprimir', '#7E98B5', '#FFFFFF', 'http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/images/general/question.gif', this)"  
+										onMouseOut="ocultar(this)">
+										<img src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/images/general/print.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;Imprimir p&aacute;gina
+									</a>
+								</li>
+						 
+								<!-- LISTADO DE CONTENIDOS -->
+								{% for chapter in theme.chapter_set.all %}
+								<li {% if chapter.parent %} style="margin-left: 20px;" {% endif %}>
+									<a {% if forloop.first %} id="current" {% endif%}	class="menu_{{chapter.id}}" href="#" onclick="selectContent({{chapter.id}})">
+										{{chapter.name|safe}}
+									</a>
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</td>
+				
+					<td valign="top" id="maincontent"> <!-- ZONA DE INFORMACIÓN PRINCIPAL -->
+						{% for chapter in theme.chapter_set.all %}
+							<div id="chapter_{{chapter.id}}" class="" {%if forloop.first%} style="display:block" {%else%} style="display:none" {%endif%}>
+								<h1>
+									<img src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/images/general/icon_docs_init.gif" width="18" height="18" border="0">&nbsp;<strong>{{chapter.name|safe}}</strong>
+								</h1>
+								
+								<table id="tableContenidoImagen">
+									<tr>
+										<td id="tdContenido" style="padding:10px;">{{chapter.body|safe}} </td>
+										{% if chapter.right != "" %} <td id="tdImagen" class="tdSombreado" style="padding:10px;">{{chapter.right|safe}} </td> {% endif %}
+									</tr>
+								</table>
+							</div>
+						{% endfor %}
+
+						<span id="situacion"><p>&nbsp;</p></span>
+					</td> <!-- END maincontent -->
+				</tr>
+			</table>
+		</div>
+		<div id="footerDiv"> <!-- Pie de pagina -->
+			{#<div id="footerDivInt"><script language="JavaScript1.2">obtenerFooterText();</script></div>#}
+			<div id="footerDivInt">2016 - © Gobierno de Canarias. Consejería de Educación y Universidades.</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+		    var options = {
+		        resizeLgImages:     true, loadingImage: "http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/images/general/loading.gif",
+		        displayNav:         true, handleUnsupported:  'remove',
+		        keysClose:          ['c', 27], // c or esc
+		        autoplayMovies:     false
+		    };
+		    Shadowbox.init(options);
+		}); 
+
+		function selectContent(id)
+		{
+			$("div[id^='chapter_']").hide();
+			$("#chapter_"+id).show();
+			$('#current').attr('id', '');
+			$('.menu_'+id).attr('id', 'current');
+		}
+	</script>
+</body>
+</html>

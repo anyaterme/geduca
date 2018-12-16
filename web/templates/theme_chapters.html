@@ -1,0 +1,180 @@
+{% load i18n utils_tags %}
+
+{% if theme %}
+	{#{{chapter.name}}  ---*---*---#}
+
+<div class="panel panel-default">
+	<div class="panel-body">
+			<h5> Nuevo Capítulo</h5>
+			<hr>
+
+		<form method="post" action="{% url "save_chapter" %}" class="form-inline" id="chapter_name_form"> 
+			{% csrf_token %}
+			<input type="text" class="form-control col-md-8" id="name" name="name" placeholder="Nombre del capítulo">
+			<input type="hidden" value="{{ theme.id }}" name="theme_id" id="id_theme"/>
+			<input type="submit" value="{% trans "Crear" %}" name="submit" class="btn btn-primary col-md-4" style="margin-left:5px"/>
+		</form>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+
+	<h5> Listado de Capítulos</h5>
+	<hr>
+	{% for chapter in theme.chapter_set.all %}
+		<div id="chapter_name_no_edit_{{chapter.id}}">
+			<ul class="nav nav-pills nav-stacked" id="menu">
+				<li class="ui-state-default chapter_li " style="{% if chapter.parent %} margin-left:30px; {% endif %} {% if forloop.counter|divisibleby:"2" %} background-color: #f0f0f0;{% endif %}"> 
+					
+					<div class="row">
+						<a href="#" id="chapter_body_edit_link_{{chapter.id}}" class="chapter_title_li">{{ chapter.name }}</a>
+					</div>
+					<div class="row chapter_actionbar">
+						<span class="col-lg-1 col-sm-1 col-xs-1">
+							<a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_name_edit_link_{{chapter.id}}"><span class="glyphicon glyphicon-edit"></span></a>
+						</span>
+
+						<span class="col-lg-1 col-sm-1 col-xs-1">
+							<a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_up_link_{{chapter.id}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+						</span>
+						<span class="col-lg-1 col-sm-1 col-xs-1">
+							<a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_down_link_{{chapter.id}}"><span class="glyphicon glyphicon-arrow-down"></span></a>
+						</span>
+						<span class="col-lg-1 col-sm-1 col-xs-1">
+							<a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_left_link_{{chapter.id}}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+						</span>
+						<span class="col-lg-1 col-sm-1 col-xs-1">
+							<a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_right_link_{{chapter.id}}"><span class="glyphicon glyphicon-arrow-right"></span></a>
+						</span>
+						<span class="col-lg-1 col-sm-1 col-xs-1">
+							<a href="#" class="btn btn-danger btn-xs"  data-chapter="{{ chapter.name }}" style="font-size:0.8em;color:white;" id="chapter_name_delete_link_{{chapter.id}}"><span class="glyphicon glyphicon-trash"></span></a>
+						</span>
+
+					</div>
+					<div style="clear:both"></div>
+				</li>
+			</ul>
+		</div>
+		<div id="chapter_name_edit_{{chapter.id}}" style="display: none;">
+			<form method='post' action='{% url "save_chapter" %}' class='form-inline' id='chapter_name_form_{{chapter.id}}'> 
+				{% csrf_token %} 
+				<input type='text' class='form-control' id='name' name='name' placeholder='Nombre del capítulo' value='{{ chapter.name }}'> 
+				<input type='hidden' value='{{ chapter.id }}' name='chapter_id' id='id_chapter'/> 
+				<input type="hidden" value="{{ theme.id }}" name="theme_id" id="id_theme"/>
+				<input type='submit' value='Guardar' name='submit' class='btn btn-primary'/> 
+			</form> 
+		</div>
+	{% endfor %}
+
+	</div>
+</div>
+	<script>
+		/*$(function() {
+			$( "#menu" ).sortable();
+			$( "#menu" ).disableSelection();
+		});*/
+
+
+		$('#chapter_name_form').submit(function() { // catch the form's submit event
+			$.ajax({ // create an AJAX call...
+				data: $(this).serialize(), // get the form data
+				type: $(this).attr('method'), // GET or POST
+				url: $(this).attr('action'), // the file to call
+				success: function(response) { // on success..
+					$('#chapter_frame').html(response); // update the DIV
+				}
+			});
+			return false;
+		});
+
+		{% for chapter in theme.chapter_set.all %}
+
+			$('#chapter_name_form_{{chapter.id}}').submit(function() { // catch the form's submit event
+				$.ajax({ // create an AJAX call...
+					data: $(this).serialize(), // get the form data
+					type: $(this).attr('method'), // GET or POST
+					url: $(this).attr('action'), // the file to call
+					success: function(response) { // on success..
+						$('#chapter_frame').html(response); // update the DIV
+					}
+				});
+				return false;
+			});
+
+			$('#chapter_name_edit_link_{{chapter.id}}').click(function() {
+				$('#chapter_name_no_edit_{{chapter.id}}').hide();
+				$('#chapter_name_edit_{{chapter.id}}').show();
+			});
+
+			$('#chapter_name_delete_link_{{chapter.id}}').click(function(e) {
+				var name = $(this).data('chapter');
+
+				if (window.confirm("¿Desea eliminar el capitulo :\""+name+"\"?")) { 
+					var url = "{% url "delete_chapter" chapter.id %}";
+					$.ajax({ // create an AJAX call...
+						url: url,
+						success: function(response) { // on success..
+							$('#chapter_frame').html(response); // update the DIV
+						}
+					});
+				}
+			});
+
+			$('#chapter_body_edit_link_{{chapter.id}}').click(function() {
+				var url = "{% url "show_chapter_body" chapter.id %}";
+				$.ajax({ // create an AJAX call...
+					url: url,
+					success: function(response) { // on success..
+						$('#chapter_body_frame').html(response); // update the DIV
+					}
+				});
+			});
+
+			$('#chapter_up_link_{{chapter.id}}').click(function() {
+				var url = "{% url "chapter_up" chapter.id %}";
+				$.ajax({ // create an AJAX call...
+					url: url,
+					success: function(response) { // on success..
+						$('#chapter_frame').html(response); // update the DIV
+					}
+				});
+				return false;
+			});
+
+			$('#chapter_down_link_{{chapter.id}}').click(function() {
+				var url = "{% url "chapter_down" chapter.id %}";
+				$.ajax({ // create an AJAX call...
+					url: url,
+					success: function(response) { // on success..
+						$('#chapter_frame').html(response); // update the DIV
+					}
+				});
+				return false;
+			});
+
+			$('#chapter_left_link_{{chapter.id}}').click(function() {
+				var url = "{% url "chapter_left" chapter.id %}";
+				$.ajax({ // create an AJAX call...
+					url: url,
+					success: function(response) { // on success..
+						$('#chapter_frame').html(response); // update the DIV
+					}
+				});
+				return false;
+			});
+
+			$('#chapter_right_link_{{chapter.id}}').click(function() {
+				var url = "{% url "chapter_right" chapter.id %}";
+				$.ajax({ // create an AJAX call...
+					url: url,
+					success: function(response) { // on success..
+						$('#chapter_frame').html(response); // update the DIV
+					}
+				});
+				return false;
+			});
+
+		{% endfor %}
+	</script>
+{% endif%}

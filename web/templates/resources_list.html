@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load i18n utils_tags filters %}
+
+{% block title %}{% trans "Arvivos de recursos" %}{% endblock %}
+
+
+{% block content %}
+	<h2> Recursos </h2>
+	<hr/>
+		{% include "resource_file_form.html" %}
+		{% if resources|length > 0  %}
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<th>{% trans "Nombre" %}</th>
+						<th>{% trans "Autor" %}</th>
+						<th>{% trans "Tamaño" %}</th>
+						<th>{% trans "Creado" %}</th>
+						<th>{% trans "Descripcion" %}</th>
+						<th>{% trans "Acciones" %}</th>
+				
+					</thead>
+					<tbody>
+						{% for item in resources %}
+
+						<tr>
+							<td>
+								{% if item.file %}
+									<a href="{{ MEDIA_URL}}{{ item.file }}" class="btn btn-link" download>
+									<span class="glyphicon glyphicon-download"></span>
+									{{ item.name }}
+									</a>
+								{% else %}
+									<span class="btn btn-link">{{ item.name }}</span>
+								{% endif %}
+
+							</td>
+							<td><a href="{% url "view_profile" item.uploader.username %}">{{ item.uploader.username }}</a></td>
+							<td>{#{{ item.file.size|to_mb }}#}</td>
+							<td>{{ item.creation_date|date:"d-m-Y H:i:s" }}</td>
+							<td>{{ item.description }}</td>
+							<td>     
+								<div class="action">
+									{% if item.uploader == request.user or request.user.is_superuser %}
+									<a href="{% url "resource_delete" item.id %}" class="btn btn-danger btn-xs btn_delete_resource" title="Delete" id="adel_{{ item.id }}">
+										<span class="glyphicon glyphicon-trash" id="spdel_{{ item.id }}"></span>
+									</a>
+									{% endif %}
+								</div>
+							</td>
+						</tr>
+
+						{% endfor %}
+					<tbody>
+				</table>
+			</div>
+		{% else %}
+			<p class="bg-info" style="padding:15px"> {% trans " Actualmente no hay recursos en la lista" %} </p>
+		{% endif %}
+	<script>
+		$('.btn_delete_resource').on('click',function(e){
+			var r = confirm("¿Eliminar el Recurso (No podrá recuperarse)?");
+			if (r == true) {
+	   		return true;
+			}else {
+				return false;
+			}	
+		});
+	</script>
+{% endblock %}

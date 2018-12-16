@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load i18n utils_tags %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12" id="course_name_frame">
+				<a href="{% url "course_details" course.id %}"> {{course.name}} </a>
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-xs-12" id="theme_name_frame">
+				{% include "theme_name.html" %}
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+		{% if theme %}
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="active"><a href="#edit_view" data-toggle="tab">Edición</a></li>
+				{% comment %}
+				<li><a href="#preview_view" data-toggle="tab" id="show_preview">Previsualización</a></li>
+				<li><a href="#source_view" data-toggle="tab" id="show_source">Código</a></li>
+				{% endcomment %}
+				<li><a href="#new_source_view" data-toggle="tab" id="new_show_source">Código Nuevo</a></li>
+			</ul>
+			<div class="tab-content well" style="min-height:400px">
+				<br/>
+				<div id="edit_view"  class="tab-pane active">
+					<div class="col-lg-4 col-md-4 col-xs-4" id="chapter_frame">
+						{% include "theme_chapters.html" %}
+					</div>
+					<div class="col-lg-8 col-md-8 col-xs-8" id="chapter_body_frame">
+						{% include "chapter_body.html" %}
+					</div>
+				</div>
+				{% comment %}
+				<div id="preview_view" class="tab-pane">
+					<br/>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div id="preview_frame">
+								{% include "theme_template.html" %}	
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="source_view" class="tab-pane">
+					<br/>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div id="source_frame">
+								{% include "theme_template_source.html" %}	
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endcomment %}
+				<div id="new_source_view" class="tab-pane">
+					<br/>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div id="new_source_frame">
+								{% include "theme_template_source_new.html" %}	
+							</div>
+						</div>
+					</div>
+				</div>
+				<div style="clear:both"></div>
+			</div>
+			{% else %}
+				<div class="alert alert-info"><span class="glyphicon glyphicon-book"></span> <strong>{% trans "Cree un tema para empezar la edición" %}</strong></div>
+			{% endif %}
+		</div>
+	</div>
+	<script>
+		$('#show_preview').click(function() {
+			var url = "/staff/preview_theme/{{theme.id}}/";
+			$.ajax({ // create an AJAX call...
+				url: url,
+				success: function(response) { // on success..
+					$('#preview_frame').html(response); // update the DIV
+				}
+			});
+		});
+
+		$('#show_source').click(function() {
+			var url = "/staff/source_theme/{{theme.id}}/";
+			$.ajax({ // create an AJAX call...
+				url: url,
+				success: function(response) { // on success..
+					$('#source_frame').html(response); // update the DIV
+				}
+			});
+		});
+
+		$('#new_show_source').click(function() {
+			var url = "/staff/new_source_theme/{{theme.id}}/";
+			$.ajax({ // create an AJAX call...
+				url: url,
+				success: function(response) { // on success..
+					$('#new_source_frame').html(response); // update the DIV
+				}
+			});
+		});
+
+	</script>
+{% endblock %}
+

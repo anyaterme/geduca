@@ -1,0 +1,51 @@
+{% load i18n utils_tags %}
+<script src="//cdn.ckeditor.com/4.4.3/full/ckeditor.js"></script>
+<div class="panel panel-default" style="margin-top:1em">
+	<div class="panel-body" style="">
+{% if chapter %}
+		<h3> Editar: <small> {{ chapter.name }}  </small></h3>	
+		<hr/>
+		<div id="chapter_body_no_edit">
+			<p> 
+				</span><a href="#" class="btn btn-success"  style="font-size:0.9em;color:white;" id="chapter_body_edit_link"><span class="glyphicon glyphicon-edit"></span> {% trans "Editar capitulo" %}</a>
+				<br/>
+				{{ chapter.body|safe }} 
+			</p>
+		</div>
+		<div id="chapter_body_edit" style="display: none;">
+			<form method='post' action='{% url "save_chapter_body" %}' class='form-inline' id='chapter_body_form'> 
+				{% csrf_token %} 
+				{{myform.as_p}}
+				{#<textarea class='form-control' id='body' name='body'> {{ chapter.body|safe }} </textarea> #}
+				<input type='hidden' value='{{ chapter.id }}' name='chapter_id' id='id_chapter'/> 
+				<input type='submit' value='Enviar' name='submit' class='btn btn-primary'/> 
+			</form> 
+		</div>
+		<div style="clear:both"></div>
+
+{% else %}
+	<div class="alert alert-info">{% trans "Seleccione un capitulo" %}</div>
+{% endif %}
+	</div>
+</div>
+<script>
+	$('#chapter_body_form').submit(function() { // catch the form's submit event
+		for (instance in CKEDITOR.instances) {
+	   	CKEDITOR.instances[instance].updateElement();
+		}
+		$.ajax({ // create an AJAX call...
+			data: $(this).serialize(), // get the form data
+			type: $(this).attr('method'), // GET or POST
+			url: $(this).attr('action'), // the file to call
+			success: function(response) { // on success..
+				$('#chapter_body_frame').html(response); // update the DIV
+			}
+		});
+		return false;
+	});
+
+	$('#chapter_body_edit_link').click(function() {
+		$('#chapter_body_no_edit').hide();
+		$('#chapter_body_edit').show();
+	});
+</script>

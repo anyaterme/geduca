@@ -1,0 +1,149 @@
+{% extends "base.html"%}
+{% load i18n filters utils_tags %}
+
+{% block content %}
+<div class="form_container container">
+	<div class="row">
+		<div class="col-md-12 col-xs-12 well">
+			<h1> {{ title }} </h1>
+			<hr/>
+			<form method="post" action="" id="course_form" class="form-horizontal">{% csrf_token %}
+				<div class="form-group {% if form.code.errors %} has-error{% endif %}">
+					{% if form.code.errors %}<span class="text-danger">{{ form.code.errors }}</span>{% endif %}
+					<label for="id_code" class="col-lg-2 col-md-2 col-xs-12">{{ form.code.label_tag }}:<span>*</span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+						{#	{{ form.code|addcss:"form-control" }}#}
+							<input class="form-control input-sm" id="id_code" maxlength="50"  value="{% if form.code.value  %}{{ form.code.value }}{% endif %}" placeholder="{%trans "Copie aqui el código del curso proporcionado por moodle"%}" name="code" type="text" data-cip-id="id_code">
+					</p>
+
+				</div>
+				<div class="form-group {% if form.name.errors %} has-error{% endif %}">
+					{% if form.name.errors %}<span class="text-danger">{{ form.name.errors }}</span>{% endif %}
+					<label for="id_name" class="col-lg-2 col-md-2 col-xs-12">{{ form.name.label_tag }}:<span>*</span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.name|addcss:"form-control input-sm"  }}
+					</p>
+				</div>
+				<div class="form-group {% if form.category.errors %} has-error{% endif %}">
+					{% if form.category.errors %}<span class="text-danger">{{ form.category.errors }}</span>{% endif %}
+					<label for="id_category" class="col-lg-2 col-md-2 col-xs-12">{{ form.category.label_tag }}:<span>*</span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.category|addcss:"form-control search_select"  }}
+					</p>
+				</div>
+				<div class="form-group {% if form.lapse.errors %} has-error{% endif %}">
+					{% if form.lapse.errors %}<span class="text-danger">{{ form.lapse.errors }}</span>{% endif %}
+					<label for="id_lapse" class="col-lg-2 col-md-2 col-xs-12">{{ form.lapse.label_tag }}:<span>*</span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.lapse|addcss:"form-control search_select"  }}
+					</p>
+				</div>
+					<div class="form-group {% if form.release_date.errors %} has-error{% endif %}">
+					{% if form.release_date.errors %}<span class="text-danger">{{ form.release_date.errors }}</span>{% endif %}
+					<label for="id_release_date" class="col-lg-2 col-md-2 col-xs-12">{{ form.release_date.label_tag }}:<span>*</span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.release_date|addcss:"form-control input-sm"  }}
+					</p>
+				</div>
+				<div class="form-group {% if form.end_date.errors %} has-error{% endif %}">
+					{% if form.end_date.errors %}<span class="text-danger">{{ form.end_date.errors }}</span>{% endif %}
+					<label for="id_end_date" class="col-lg-2 col-md-2 col-xs-12">{{ form.end_date.label_tag }}:<span>*</span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.end_date|addcss:"form-control input-sm"  }}
+					</p>
+				</div>
+				<div class="form-group {% if form.status.errors %} has-error{% endif %}">
+					{% if form.status.errors %}<span class="text-danger">{{ form.status.errors }}</span>{% endif %}
+					<label for="id_status" class="col-lg-2 col-md-2 col-xs-12">{{ form.status.label_tag }}:<span>*</span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.status|addcss:"form-control status_select" }}
+					</p>
+				</div>
+					<div class="form-group {% if form.sb_link.errors %} has-error{% endif %}">
+					{% if form.sb_link.errors %}<span class="text-danger">{{ form.sb_link.errors }}</span>{% endif %}
+					<label for="id_sb_link" class="col-lg-3 col-md-3 col-xs-12">{{ form.sb_link.label_tag }}:<span></span></label>
+					<p class="col-lg-9 col-md-9 col-xs-12">
+							{{ form.sb_link|addcss:"form-control input-sm"  }}
+					</p>
+				</div>
+				<div class="form-group {% if form.aulatic_link.errors %} has-error{% endif %}">
+					{% if form.aulatic_link.errors %}<span class="text-danger">{{ form.aulatic_link.errors }}</span>{% endif %}
+					<label for="id_aulatic_link" class="col-lg-3 col-md-3 col-xs-12">{{ form.aulatic_link.label_tag }}:<span></span></label>
+					<p class="col-lg-9 col-md-9 col-xs-12">
+							{{ form.aulatic_link|addcss:"form-control input-sm"  }}
+					</p>
+				</div>
+				<div class="form-group {% if form.cep_link.errors %} has-error{% endif %}">
+					{% if form.cep_link.errors %}<span class="text-danger">{{ form.cep_link.errors }}</span>{% endif %}
+					<label for="id_aulatic_link" class="col-lg-3 col-md-3 col-xs-12">{{ form.cep_link.label_tag }}:<span></span></label>
+					<p class="col-lg-9 col-md-9 col-xs-12">
+							{{ form.cep_link|addcss:"form-control input-sm"  }}
+					</p>
+				</div>
+			<input type="submit" value="Enviar" class="btn btn-primary"/>
+			<input type="button" value="Volver" class="btn btn-default" onclick="window.history.back()"/>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+   sel_date = new Date();
+	var dd = sel_date.getDate();
+	var mm = sel_date.getMonth()+1; //January is 0!
+	var yyyy = sel_date.getFullYear();
+
+	if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} sel_date = dd+'-'+mm+'-'+yyyy;
+
+	date_str = $('#id_release_date').val().split('/');
+	if (date_str.length == 3)
+	{
+		date_str = date_str[2]+"-"+date_str[1]+"-"+date_str[0];
+		$('#id_release_date').val(date_str);
+	}
+	
+	$('#id_release_date').Zebra_DatePicker({
+		format : 'Y-m-d',
+		onSelect: function(date){
+			sel_date= date;
+		},
+		lang_clear_date: "{% trans "Reset" %}",
+		days: ["{% trans "Domingo" %}","{% trans "Lunes" %}","{% trans "Martes" %}", "{% trans "Miercoles" %}", "{% trans "Jueves" %}","{% trans "Viernes"%}", "{% trans "Sabado"%}"],
+
+		months: ['{% trans "Enero"%}', '{% trans "Febrero" %}', '{% trans "Marzo" %}', '{% trans "Abril"%}', '{% trans "Mayo" %}', '{% trans "Junio" %}', '{% trans "Julio" %}', '{% trans "Agosto" %}', '{% trans "Septiembre" %}', '{% trans "Octubre" %}', '{% trans "Noviembre" %}', '{% trans "Diciembre" %}'],
+		show_select_today: "{% trans "Hoy" %}",
+		show_icon: true
+	});
+
+	{# ------------------- end date ----------------------- #}
+
+		end_date_str = $('#id_end_date').val().split('/');
+	if (end_date_str.length == 3)
+	{
+		end_date_str = end_date_str[2]+"-"+end_date_str[1]+"-"+end_date_str[0];
+		$('#id_end_date').val(end_date_str);
+	}
+	
+	$('#id_end_date').Zebra_DatePicker({
+		format : 'Y-m-d',
+		onSelect: function(date){
+			sel_end_date= date;
+		},
+		lang_clear_date: "{% trans "Reset" %}",
+		days: ["{% trans "Domingo" %}","{% trans "Lunes" %}","{% trans "Martes" %}", "{% trans "Miercoles" %}", "{% trans "Jueves" %}","{% trans "Viernes"%}", "{% trans "Sabado"%}"],
+
+		months: ['{% trans "Enero"%}', '{% trans "Febrero" %}', '{% trans "Marzo" %}', '{% trans "Abril"%}', '{% trans "Mayo" %}', '{% trans "Junio" %}', '{% trans "Julio" %}', '{% trans "Agosto" %}', '{% trans "Septiembre" %}', '{% trans "Octubre" %}', '{% trans "Noviembre" %}', '{% trans "Diciembre" %}'],
+		show_select_today: "{% trans "Hoy" %}",
+		show_icon: true
+	});
+
+
+
+	$('.search_select').chosen({no_results_text: "{% trans "Sin resultado en la busqueda" %}"})
+	$('.status_select').chosen({no_results_text: "{% trans "Sin resultado en la busqueda" %}", disable_search:true})
+
+
+</script>
+{% endblock %}
+
+

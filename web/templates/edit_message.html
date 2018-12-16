@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load i18n utils_tags filters %}
+
+{% block title %}{% trans "Edit Message" %}{% endblock %}
+
+{% block head_tag %}
+{% endblock %}
+
+{% block breadcumb %}
+	<ol class="breadcrumb" style="">
+		<li><a href="{% url "course_details" form_message.course.id   %}">{{ form_message.course.name }}</a></li>
+		<li class="active"><a href="{% url "edit_message" form_message.id   %}" >{{ form_message.id }}</a></li>
+	</ol>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+	{% if error %}
+		<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span> {{ error }} </div>
+	{% else %}
+	<div class="row">
+		<h3 class="col-md-10" >  {% trans "Editar mensaje" %}  </h3>
+	</div>
+	<div class="row">
+		<div class ="col-md-6 col-offset-1 col-xs-12">
+			{% include "message_form.html" %}
+		</div>
+		<div class ="col-md-4 col-xs-12 col-md-offset-1">
+			<h3> Ficheros asociados </h3>
+			{% if files|length < 1 %}
+				<div class="alert alert-info">{% trans "No hay ficheros asociados" %}</div>	
+			{% else %}
+				<ul class="list-group">	
+				{% for item in files %}
+					
+					<li class="list-group-item row" id="file_li_{{item.id}}"><span class="col-md-10" >{{ item.name }}</span>
+						<a href="" class="btn btn-danger btn-xs del_btn" ><span class="glyphicon glyphicon-trash " id="rm_{{ item.id }}"></span></a>
+						<img src="{{ STATIC_URL }}images/styles/loading_spin.gif" style=" width:20px; height:20px; display:none;" id="ld_ {{ item.id }}"/>
+					</li>
+				{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+<script>
+
+	$("#id_content").attr("cols","63");
+	$('.files_form iframe').css({width:"500px"});
+	
+	$('.del_btn').on('click',function(e){
+			if (window.confirm("{% trans "Seguro que desea borrar el archivo?" %}")){
+			var id = e.target.id.split("_")[1];
+			$.ajax({
+				type: 'GET',
+				url: '/{{ LANGUAGE_CODE }}/delete/message/file/'+id+"/",
+				data: {  },
+				beforeSend:function(){
+					$("#ld_"+id).show();
+				},
+				success:function(data){
+					$("#ld_"+id).hide();
+					if (data.error)
+					{
+						alert(data.error_msg);
+					}else
+					{
+						$("#file_li_"+id).fadeOut(200);
+					}
+				},
+				error:function(){
+				},
+				complete:function(){
+				}
+			});
+			return false;
+		}// fin de if
+
+	});
+
+</script>
+{% endblock %}

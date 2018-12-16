@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n%}
+
+{% block header %}
+	<style>
+		li.search-field input
+		{
+			height: 2.5em!important;
+			padding-top: 5px;
+
+		}
+		.errorlist li
+		{
+			list-style: none;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+<div class="container well">
+	<div class="row">
+		<form method="post" action=""> {% csrf_token %}
+			{{ form }}	
+			<p style="margin-top: 1em;">
+			<input type="submit" value="Enviar" name="submit" class="btn btn-primary"/>
+			</p>
+		</form>
+	</div>
+</div>
+	<script>
+		$('input').addClass("form-control")
+		$('select').addClass("form-control")
+		$('input[type="submit"]').removeClass("form-control")
+		$('.helptext').css({ 'display': 'none'});
+		$('#id_parent').chosen();
+		$('#id_manager').chosen();
+		$('.errorlist li').addClass("alert");
+		$('.errorlist li').addClass("alert-danger");
+
+
+
+
+	
+	</script>
+
+{% endblock %}
+

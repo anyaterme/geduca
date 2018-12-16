@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load i18n utils_tags filters %}
+
+{% block title %}{% trans "Courses List" %}{% endblock %}
+
+
+{% block head_tag %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-sortable.css" />
+
+		<script type="text/javascript" src="{{ STATIC_URL }}js/moment.min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-sortable.js"></script>
+		
+{% endblock %}
+
+
+{% block content %}
+<script>
+$(document).ready(function(e){
+    $('.search-panel .dropdown-menu').find('a').click(function(e) {
+		e.preventDefault();
+		var param = $(this).attr("href").replace("#","");
+		var concept = $(this).text();
+		$('.search-panel span#search_concept').text(concept);
+		$('.input-group #search_param').val(param);
+	});
+	 $('#sub_search').on('click',function(e){
+		 	$('#search_form').submit();
+		});
+});
+</script>
+	<h2> Mis Cursos </h2>
+ 	<hr/>	
+	<div class="">
+		{% if request.user.is_staff %}
+		<div class="row" style="margin-bottom:0.3em">
+			<div class="col-md-2 col-md-offset-8 col-xs-6 col-xs-offset-6" style="margin-right:-4.5em">
+				<a href="{% url "add_course" %}" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Nuevo Curso </a>
+			</div>
+			<div class="col-md-2 col-xs-6" style="">
+				<a href="{% url "add_category" %}" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Nueva Categoría </a>
+			</div>
+
+		</div>
+		{% endif %}
+
+		{% if not empty %}
+		<div class="row">
+			<div class="container">
+				<div class="row">    
+					<div class="col-xs-8 col-xs-offset-2">
+						<div class="" style="padding:1em;">
+					 	<form method="post" action="" id="search_form" >{% csrf_token %}
+							<div class="input-group">
+								<div class="input-group-btn search-panel">
+							 		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+										<span id="search_concept">Elegir categoria</span> <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										{% if categories|length > 0 %}
+											{% for item in categories %}
+												<li><a href="#{{ item.id }}">{{ item.name }}</a></li>
+											{% endfor %}
+										{% endif %}
+
+									</ul>
+								</div>
+								<input type="hidden" name="search_param" value="-1" id="search_param">         
+								<input type="text" class="form-control" {% if request.POST.search_str %} value="{{ request.POST.search_str }}" {% endif %} name="search_str" placeholder="Nombre o codigo ...">
+								<span class="input-group-btn">
+									 <button class="btn btn-default" id="sub_search"  type="button"><span class="glyphicon glyphicon-search"></span></button>
+								</span>
+						  	</div>
+						 </form>
+						 </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div> {# class well #}
+	{% if courses|length > 0 %}
+	<div clasS="row" style="margin-bottom: 1em">
+		<div class="col-md-9 col-xs-8">
+		</div>
+		<div class="col-md-3 col-xs-4">
+			<a href="btn btn-link" id="show_finished_btn"><span class="glypicon glyphicon-plus"></span>Mostrar/Ocultar Terminados</a>
+		</div>
+	</div>
+		<div class="table-responsive well">
+		
+		<table class="table table-striped sortable">
+				<thead>
+					<th>{% trans "Nombre" %}</th>
+				{#	<th data-defaultsort='disabled'>{% trans "Novedades" %}</th>#}
+
+					<th>{% trans "Codigo" %}</th> 
+					<th>{% trans "Categoria" %}</th>
+					<th>{% trans "Fecha de publicación" %}</th>
+					<th>{% trans "Fecha Finalización" %} </th>
+					{#<th>{% trans "Periodo" %}</th>#}
+					{#<th>{% trans "Estado" %}</th>#}
+					<th data-defaultsort='disabled'>{% trans "Actions" %}</th>
+			
+				</thead>
+				<tbody>
+					{% for item in courses %}
+					<tr {% if item|course_finished %} class="course_finished info" style="display:none;" {% endif %}>
+						<td class="course_list_lnk">
+							<div><a href="{% url "course_details" item.id %}" class="btn-link" title="">{{ item.name }}</a></div></td>
+					{#	<td><span class="badge">{{ item|get_unread_messages:request.user }}</span></td>#}
+						<td>{{ item.code }}</td>
+						<td>{{ item.category.name }}</td>
+						<td>{{ item.release_date|date:"d-m-Y" }}</td>
+						<td>{{ item.end_date|date:"d-m-Y"}}</td>
+					{#	<td>{{ item.lapse }}</td> #}
+					{#	<td> {% autoescape off %}{{ item.status|get_course_status }} {% endautoescape %}  </td>#}
+						<td>     
+							<div class="action">
+								<a href="{% url "edit_course" item.id %}" class="btn btn-primary btn-xs" title="Edit" >
+									<span class="glyphicon glyphicon-pencil"></span>
+								</a>
+								<a href="{% url "user_course_delete" request.user.id item.id %}" class="btn btn-danger btn-xs btn_delete_user_course" title="Salir del curso" id="adel_{{ item.name }}"><span class="glyphicon glyphicon-log-out" id="spdel_{{ item.name }}"></span>
+
+									{% if request.user.is_superuser %}
+										<a href="{% url "delete_course" %}?course={{ item.id }}" class="btn btn-danger btn-xs btn_delete_course" title="Delete" id="adel_{{ item.id }}">
+										<span class="glyphicon glyphicon-trash" id="spdel_{{ item.id }}"></span>
+									{% endif %}
+								</a>
+							</div>
+						</td>
+					</tr>
+
+					{% endfor %}
+				<tbody>
+			</table>
+			{% else %}
+				<p class="alert alert-info" style="padding:15px; margin-top: 1em;"> {% trans "Su busqueda no ha producido resultados" %} </p>
+
+			{% endif %}
+		</div>
+		{% else %}
+			<p class="bg-info" style="padding:15px"> {% trans " Actualmente no hay cursos en la lista" %} </p>
+
+		</div>	
+		{% endif %}
+	
+	
+	<script>
+		$('#show_finished_btn').on('click',function(e){
+			$('.course_finished').toggle();
+			return false;
+		});
+		$('.btn_delete_user_course').on('click',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			var name = e.target.id.split("_")[1]
+			var r = confirm("¿Salir del curso '"+ name +"' (Perdera el acceso a todos los datos del curso.)?");
+			if (r == true) {
+	   		return true;
+			}else {
+				return false;
+			}	
+		});
+		$('.btn_delete_course').on('click',function(e){
+			var r = confirm("¿Eliminar el usuario (Se perderan todos los mensajes y archivos asociados y no podran recuperarse)?");
+			if (r == true) {
+	   		return true;
+			}else {
+				return false;
+			}	
+		});
+		$.bootstrapSortable(true)
+	</script>
+{% endblock %}

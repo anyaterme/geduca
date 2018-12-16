@@ -1,0 +1,174 @@
+#content_wrapper_main
+{
+	min-height: 800px!important;
+}
+
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin-bottom: 20px;
+}
+
+/* Flip around the padding for proper display in narrow viewports */
+.navbar-wrapper .container {
+  padding-left: 0;
+  padding-right: 0;
+}
+.navbar-wrapper .navbar {
+  padding-left: 5em;
+  padding-right: 5em;
+}
+
+.navbar-content
+{
+    width:320px;
+    padding: 15px;
+    padding-bottom:0px;
+}
+.navbar-content:before, .navbar-content:after
+{
+    display: table;
+    content: "";
+    line-height: 0;
+}
+
+.nav_margin 
+{
+	height: 80px;
+}
+
+
+
+table.mceLayout
+{
+	width : 100%!important;
+}
+
+
+.comment-text
+{
+	margin-top:  0.5em;
+	margin-bottom : 0.5em;
+}
+
+.new_message_btn
+{
+	margin-top: -2.5em;
+}
+
+.course_title
+{
+	margin-left: 0.5em;
+	margin-bottom: 1em;
+}
+
+.profile_card
+{
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+.pic
+{
+     margin-top:50px; 
+     width:120px;
+     margin-left:50px;
+     margin-bottom:-60px;
+}
+
+.panel
+{
+    /*background-image:url("http://autoimagesize.com/wp-content/uploads/2014/01/rainbow-aurora-background-wallpaper-colour-images-rainbow-background.jpg"); */
+}
+
+.name
+{
+    position:absolute;
+    padding-left:200px;
+    font-size:30px;
+}
+
+.dropdown
+{
+    position:absolute;
+}
+
+.change
+{
+ position:relative; 
+ bottom:20px;
+ padding:1px;
+ color:white;
+ text-decoration:none;
+}
+
+
+.change:hover
+{
+ text-decoration:none;
+ background-color:black;
+ color:white;
+}
+td.course_list_lnk div 
+{
+	display: inline-block!important;
+	width : 30em!important;
+	max-width : 30em!important;
+	overflow: hidden;
+position : relative;
+}
+td.course_list_lnk a
+{
+}
+
+/* ==========================================
+PERFIL DE USUARIO 
+=============================================*/
+.front-image
+{
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+
+
+/*===========================================
+GENERADOR DE CODIGO HTML
+=============================================*/
+.chapter_li
+{
+	-webkit-border-radius: 3px;
+	-moz-border-radius:3px;
+	border-radius: 3px;
+	padding-top: 0.4em;
+	padding-right: 1em;
+	margin-bottom: 10px!important;
+	padding-left: 1.2em;
+	margin-right: 4px;
+	padding-bottom: 0.8em;
+	
+	
+}
+
+.chapter_title_li
+{
+	margin-right: 5px;
+	margin-left: 5px;
+	word-wrap: break-word;
+}
+
+.chapter_actionbar
+{
+	padding: 2px;
+	margin-bottom: -1%;
+	margin-left: 2%;
+	
+	margin-left: -18px!important;
+	width: 112%;
+}
+
+

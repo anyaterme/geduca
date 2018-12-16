@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load i18n filters utils_tags %}
+
+
+{% block content %}
+	<h2>{{ title }}</h2>
+	<hr/>
+	<div class="well">
+		 {% if form.errors %}
+		<div class="alert alert-danger">
+			{{ form.errors}}
+			{{ error }}
+		
+		</div>
+		{% endif %}
+		{% if profile_form.errors %}
+			{{ profile_form.errors }}
+		{% endif %}
+		<form action="" method="post">{% csrf_token %}
+			<div class="form-group {% if form.username.errors %} has-error{% endif %}">
+				{% if form.username.errors %}<span class="text-danger">{{ form.username.errors }}</span>{% endif %}
+				<label for="id_username" class="col-lg-2 col-md-2 col-xs-12">{{ form.username.label_tag }}<span>*</span></label>
+				<p class="col-lg-10 col-md-10 col-xs-12">
+						{{ form.username|addcss:"form-control input-sm" }}
+				</p>
+			</div>
+			{% if not edit %}
+					<div class="form-group {% if form.password.errors %} has-error{% endif %}">
+					{% if form.password.errors %}<span class="text-danger">{{ form.password.errors }}</span>{% endif %}
+					<label for="id_password" class="col-lg-2 col-md-2 col-xs-12">{{ form.password.label_tag }}<span>*</span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.password|addcss:"form-control input-sm" }}
+					</p>
+
+				</div>
+
+			{% else %}
+				<input type="hidden" value="{{ form.password.value }}" id="id_password" name="password">
+			{% endif %}
+			<div class="form-group {% if form.first_name.errors %} has-error{% endif %}">
+					{% if form.first_name.errors %}<span class="text-danger">{{ form.first_name.errors }}</span>{% endif %}
+					<label for="id_fist_name" class="col-lg-2 col-md-2 col-xs-12">{{ form.first_name.label_tag }}<span></span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.first_name|addcss:"form-control input-sm" }}
+					</p>
+			</div>
+			<div class="form-group {% if form.last_name.errors %} has-error{% endif %}">
+					{% if form.last_name.errors %}<span class="text-danger">{{ form.last_name.errors }}</span>{% endif %}
+					<label for="id_last_name" class="col-lg-2 col-md-2 col-xs-12">{{ form.last_name.label_tag }}<span></span></label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.last_name|addcss:"form-control input-sm" }}
+					</p>
+			</div>
+			<div class="form-group {% if form.email.errors or error  %} has-error{% endif %}">
+				{% if form.email.errors %}<span class="text-danger">{{ form.email.errors }}</span>{% endif %}
+				{% if error %} <span class="text-danger">{{ error }} </span> <br>{% endif %}
+				<label for="id_email" class="col-lg-3 col-md-3 col-xs-12">{{ form.email.label_tag }}<span>*</span></label>
+				<p class="col-lg-9 col-md-9 col-xs-12">
+					{{ form.email|addcss:"form-control input-sm" }}
+				</p>
+			</div>
+
+			<div class="form-group {% if profile_form.phone.errors or error  %} has-error{% endif %}">
+				{% if profile_form.phone.errors %}<span class="text-danger">{{ profile_form.phone.errors }}</span>{% endif %}
+				{% if error %} <span class="text-danger">{{ error }} </span> <br>{% endif %}
+				<label for="id_email" class="col-lg-3 col-md-3 col-xs-12">{{ profile_form.phone.label_tag }}</label>
+				<p class="col-lg-9 col-md-9 col-xs-12">
+					{{ profile_form.phone|addcss:"form-control input-sm" }}
+				</p>
+			</div>
+			<div class="form-group {% if profile_form.mobile_phone.errors or error  %} has-error{% endif %}">
+				{% if profile_form.mobile_phone.errors %}<span class="text-danger">{{ profile_form.mobile_phone.errors }}</span>{% endif %}
+				{% if error %} <span class="text-danger">{{ error }} </span> <br>{% endif %}
+				<label for="id_email" class="col-lg-3 col-md-3 col-xs-12">{{ profile_form.mobile_phone.label_tag }}</label>
+				<p class="col-lg-9 col-md-9 col-xs-12">
+					{{ profile_form.mobile_phone|addcss:"form-control input-sm" }}
+				</p>
+			</div>
+
+		  <input type="submit" value="Enviar" class="btn btn-primary" style="margin-top:1em;"/>
+		</form>
+	</div>
+
+
+
+
+{% endblock %}

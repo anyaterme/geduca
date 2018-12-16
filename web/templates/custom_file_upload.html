@@ -1,0 +1,20 @@
+{% extends 'jfu/upload_form.html' %}
+
+
+{% block JS_OPTS %}
+autoUpload: true,
+maxNumberOfFiles: 10,
+sequentialUploads: true,
+{% endblock %}
+
+  {% block UPLOAD_FORM_BUTTON_BAR_CONTROL %}
+            <button type="button" class="btn btn-danger delete">
+                <i class="icon-trash icon-white"></i>
+                <span>Delete</span>
+            </button>
+  {% endblock %}
+
+
+
+
+

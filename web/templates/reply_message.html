@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load i18n utils_tags filters %}
+
+{% block title %}{% trans "Edit Message" %}{% endblock %}
+
+{% block head_tag %}
+{% endblock %}
+
+{% block breadcumb %}
+	<ol class="breadcrumb" style="">
+		<li><a href="{% url "course_details" parent.course.id   %}">{{ parent.course.name }}</a></li>
+		<li class="active"><a href="{% url "reply_message" parent.id   %}" >{{ parent.id }}</a></li>
+	</ol>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+	{% if error %}
+		<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span> {{ error }} </div>
+	{% else %}
+	<div class="row">
+		<h3 class="col-md-10" >  {% trans "Responder mensaje" %}  </h3>
+	</div>
+	<div class="row">
+		{{ form.errors }}
+		<div class ="col-md-10 col-md-offset-1 col-xs-12">
+			{% include "message_form.html" %}
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+<script>
+	$("#id_content").attr("cols","100");
+	$('.del_btn').on('click',function(e){
+			if (window.confirm("{% trans "Seguro que desea borrar el archivo?" %}")){
+			var id = e.target.id.split("_")[1];
+			$.ajax({
+				type: 'GET',
+				url: '/{{ LANGUAGE_CODE }}/delete/message/file/'+id+"/",
+				data: {  },
+				beforeSend:function(){
+					$("#ld_"+id).show();
+				},
+				success:function(data){
+					$("#ld_"+id).hide();
+					if (data.error)
+					{
+						alert(data.error_msg);
+					}else
+					{
+						$("#file_li_"+id).fadeOut(200);
+					}
+				},
+				error:function(){
+				},
+				complete:function(){
+				}
+			});
+			return false;
+		}// fin de if
+	});
+</script>
+{% endblock %}

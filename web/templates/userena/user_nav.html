@@ -1,0 +1,73 @@
+{% load i18n %}
+{% if request.user.is_authenticated %}
+<div class="nav_margin"></div>
+<div class="navbar-wrapper">
+	 <div class="">
+		  <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+				<div class="">
+					 <div class="navbar-header">
+						  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span
+									 class="icon-bar"></span><span class="icon-bar"></span>
+						  </button>
+						  <a class="navbar-brand" href="#"></a>
+					 </div>
+					 <div class="navbar-collapse collapse">
+						  <ul class="nav navbar-nav">
+								<li><a href="{% url "courses_list" %}">{% trans "Cursos" %}</a></li>
+								{% if request.user.is_staff %}
+									<li><a href="{% url "list_users" %}">{% trans "Usuarios" %}</a></li>
+								{% endif %}
+								<li><a href="{% url "resources_list" %}">{% trans "Recursos y Notas" %}</a></li>
+
+						  </ul>
+						  <ul class="nav navbar-nav navbar-right">
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil
+									 <b class="caret"></b></a>
+									 <ul class="dropdown-menu profile_card">
+										  <li>
+												<div class="navbar-content ">
+													 <div class="row">
+														  <div class="col-md-5">
+														  		{% if  user.get_profile.get_mugshot_url %}
+																<img src="{{ user.get_profile.get_mugshot_url }}"
+																	 alt="Alternate Text" class="img-responsive" />
+																{% else %}
+																	<img src="{{ STATIC_URL }}images/styles/no_image.jpg"
+																	 alt="Alternate Text" class="img-responsive" />
+																{% endif %}
+																<p class="text-center small">
+																	 <a href="{% url 'userena_profile_edit' user.username %}">Editar Perfil</a></p>
+														  </div>
+														  <div class="col-md-7">
+																<span>{{ request.user.username }}</span>
+																<p class="text-muted small">
+																	 {{ request.user.email }} </p>
+																<div class="divider">
+																</div>
+																<a href="{% url 'userena_profile_detail' user.username %}" class="btn btn-primary btn-sm active">Ver Perfil</a>
+														  </div>
+													 </div>
+												</div>
+												<div class="navbar-footer">
+													 <div class="navbar-footer-content">
+														  <div class="row">
+																<div class="col-md-6">
+																	 <a href="{% url 'userena_password_change' user.username %}" class="btn btn-default btn-sm">Cambiar Contrase&ntilde;a</a>
+																</div>
+																<div class="col-md-6">
+																	 <a href="{% url "userena_signout" %}" class="btn btn-danger btn-sm pull-right">Cerrar Sesión</a>
+																</div>
+														  </div>
+													 </div>
+												</div>
+										  </li>
+									 </ul>
+								</li>
+						  </ul>
+					 </div>
+				</div>
+		  </div>
+	 </div>
+</div>
+{% endif %}

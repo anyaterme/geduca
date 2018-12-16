@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load i18n utils_tags  %}
+{% load url from future %}
+
+
+{% block title %}{% trans "Signin" %}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+	<h3 class="text-info">GEDUCA : <small class="text-default">Plataforma de gestión de Educación</small></h3>
+</div>
+<div clasS="row">
+
+<div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-xs-12" style="margin-top:4em;">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<div class="panel-title"> Identifícate </div>
+		</div>
+		<div style="padding-top:30px" class="panel-body">
+
+			{% if form.errors %}
+				<div class="row">
+					<div style="width:90%; margin-left:5%;" id="login-alert" class="alert alert-danger col-md-12">Nombre de usuario o contraseña incorrectos </div>
+				</div>
+			{% endif %}
+			<form action="" method="post" class=form-horizontal" role="form">
+
+			  {% csrf_token %}
+			  <fieldset>
+				 <legend>{% trans "Acceso " %}</legend>
+				 {#{{ field.errors }}#}
+				 {% comment %} Displaying checkboxes differently {% endcomment %}
+				  <div style="margin-bottom: 25px" class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+						<input id="id_identification" type="text" class="form-control" name="identification" value="" placeholder="{% trans "nombre de usuario o email" %}">                                        
+				  </div>
+				  <div style="margin-bottom: 25px" class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+						<input id="idpassword" type="password" class="form-control" name="password" placeholder="password">
+					</div>
+				 <p class="checkbox">
+				 <label for="id_remember_me">{{ form.remember_me }} {{ form.remember_me.label_tag }}</label>
+				 </p>
+				 
+			  </fieldset>
+			  <input type="submit" class="btn btn-success col-md-3"   value="{% trans "Signin" %}" />
+			  <p class="forgot-password col-md-3"><a class="btn btn-primary" href="{% url 'userena_password_reset' %}" title="{% trans 'Forgot your password?' %}">{% trans "Forgot your password?" %}</a></p>
+			  {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}

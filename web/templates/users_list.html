@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block content %}
+<div class="container">
+	<div class="row">
+	<h2> Listado de Usuarios </h2>
+	<hr/>
+		<div class="row" style="margin-bottom:0.3em">
+			<div class="col-lg-5 col-md-10, col-xs-6">
+				<form method="post" action="" id="search_form" >{% csrf_token %}
+					<div class="input-group">
+						<input type="hidden" name="search_param" value="-1" id="search_param">         
+						<input type="text" class="form-control" {% if request.POST.search_str %} value="{{ request.POST.search_str }}" {% endif %} name="search_str" placeholder="Nombre o email"\>
+						<span class="input-group-btn">
+							 <button class="btn btn-default" id="sub_search"  type="button"><span class="glyphicon glyphicon-search"></span></button>
+						</span>
+					</div>
+				 </form>
+				 <script>
+				 	 $('#sub_search').on('click',function(e){
+		 				$('#search_form').submit();
+					});
+				 </script>
+			</div>
+			<div class="col-lg-2 col-lg-offset-5 col-md-2 col-xs-6 " style="text-align:right">
+				<a href="{% url "add_user" %}" class="btn btn-info"><span class="glyphicon glyphicon-plus-sign"></span> Nuevo Usuario </a>
+			</div>
+		</div>
+	<div class="table-responsive well">
+		<table class="table table-striped">
+			<thead>
+				<th>Usuario</th>
+				{#<th>Estado</th>#}
+				<th>E-mail</th>
+				<th>Teléfono</th>
+				{#<th>Ultimo Accesso </th>#}
+				<th>Actions</th>
+			</thead>
+			<tbody>
+			{% for user in users %}
+				<tr>
+					<td><a href="{% url "view_profile" user.username %}">{{ user.first_name }} {{ user.last_name }}</a></td>
+					{% comment %}<td>
+						{% if user.is_active %}
+						<span class="label label-primary">{% trans "Activo"%}</span>
+						{% else %}
+						<span class="label label-default">{% trans "Inactivo" %}</span>
+						{% endif %}
+					
+					</td>{% endcomment %}
+					<td>{{ user.email }}</td>
+					<td>{{ user.profile.mobile_phone }} / {{ user.profile.phone }}</td>
+
+					{#<td> {{ user.last_login|date:"d-m-Y H:i:s" }}</td>#}
+					<td>
+						<div class="action">
+						{% if request.user.is_staff %}
+							<a href="{% url "edit_user" user.id %}" class="btn btn-primary btn-xs" title="Edit" >
+								<span class="glyphicon glyphicon-pencil"></span>
+							</a>
+							{% if user.is_active %}
+								<a href="{% url "disable_user" user.id %}" class="btn btn-default btn-xs btn_disable_user" style="background-color:gray" title="Disable" id="delusr_{{ user.id }}">
+									<span class="glyphicon glyphicon-remove" id="spdel_{{ user.id }}"></span>
+								</a>
+								{% else %}
+								<a href="{% url "restore_user" user.id %}" class="btn btn-info btn-xs btn_activate_user" title="Restore" id="activate_{{ user.id }}">
+										<span class="glyphicon glyphicon-ok" id="spdel_{{ user.id }}"></span>
+								</a>
+								
+								{% endif %}
+									
+								<a href="{% url "delete_user" user.id %}" class="btn btn-danger btn-xs btn_delete_user" style="" title="Delete" id="drpusr_{{ user.id }}">
+									<span class="glyphicon glyphicon-trash" id="spdel_{{ user.id }}"></span>
+								</a>
+							{% endif %}
+					</div>
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<script>
+	$('.btn_delete_user').on('click',function(e){
+			var r = confirm("¿Eliminar el usuario (Se perderan todos los mensajes y archivos asociados y no podran recuperarse)?");
+			if (r == true) {
+	   		return true;
+			}else {
+				return false;
+			}	
+		});
+	</script>
+
+</div>
+{% endblock %}

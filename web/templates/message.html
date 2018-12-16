@@ -1,0 +1,78 @@
+{% load i18n %}
+{% load filters utils_tags %}
+
+<div class="row">
+ <div class="col-xs-2 col-md-1">
+	  <img src="{{ message.author.get_profile.get_mugshot_url }}" class="img-circle img-responsive" alt="" />
+ </div>
+ <div class="col-xs-10 col-md-11">
+ 	{% autoescape off %}
+	<div class="row">
+		<div class="col-md-12 col-xs-12">
+			<div clasS="col-md-9 col-xs-9">
+				<h4 class="col-md-8 col-xs-7" style="margin-left:-2em">{{ message.subject }}</h4>
+				<div class="col-md-4 col-xs-5">
+					{% if not message.parent %}
+						{{ message.status|get_message_status }}
+						{{ message.priority|get_message_priority }}
+					{% endif %}
+				</div>
+			</div>
+		{# -- bara de acciones -- #}	
+		{% if request.user.is_staff %}
+			<div class="action col-md-3 col-xs-3">
+				<div class="btn-group">
+					{% if not message.parent %}
+					<button type="button" class="btn btn-info btn-xs dropdown-toggle" title="Approved" data-toggle="dropdown">
+						<span class="glyphicon glyphicon-tag"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li role="presentation" class="dropdown-header">Cambiar Estado</li>
+						{% for item in MESSAGE_STATES %}
+							<li><a href="{% url "change_state" course.id message.id %}?status={{ item.0 }}">{{ item.1 }}</a></li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+				</div>
+				{% if request.user|can_edit_message:message %}
+					<a href="{% url "edit_message"  message.id  %}" class="btn btn-primary btn-xs edit_btn" title="Edit" id="btn_{{ message.id }}">
+						 <span class="glyphicon glyphicon-edit" id="sp_{{ message.id }}"></span>
+					</a>
+					<a href="" class="btn btn-danger btn-xs delete_btn" title="Delete" id="btn_{{ message.id }}">
+						 <span class="glyphicon glyphicon-trash" id="sp_{{ message.id }}"></span>
+					</a>
+				{% endif %}
+			</div>
+		 {% endif %}
+		{# -- fin de la barra de acciones ---#} 
+		</div>
+	</div>
+	<div class="row">
+		<div class="mic-info">
+			<a href="{% url "view_profile" message.author.username %}">{{ message.author.username }}</a>
+			 <small> {{ message.creation_date|date:"d-M-Y H:m:i"}}</small>
+		</div>
+		{#<div></div>#}
+	</div>
+	<div class="comment-text">
+		{{ message.content }}
+	 </div>
+	{% endautoescape %}
+	{% if message.message_files.all|length > 0 %}
+	<div class="panel panel-default" style="margin-top:1em; margin-right: 1em;">
+		<div class="panel-heading">
+			<span class="glyphicon glyphicon-paperclip">
+				</span><span class="panel-title"> {% trans "Archivos Adjuntos" %} 
+			</span>
+		</div>
+		<div class="panel-body">
+			{% for file in message.message_files.all %}
+			<a href="{{ MEDIA_URL }}{{ file.file }}" class="col-md-4" download> {{ file.name }} <small>({{ file|file_size }})</small> </a>
+			{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+	{% if not message.parent %}
+		<a href="{% url "reply_message" message.id %}" class="btn btn-primary col-md-offset-10" style="margin-bottom: 1em;"><span class="glyphicon glyphicon-share" ></span>{% trans "Responder" %}</a>
+	{% endif %}
+</div>
