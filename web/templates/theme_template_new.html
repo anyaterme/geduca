@@ -74,7 +74,7 @@
 						</div>
 						{% endcomment %}
 
-						<div class="fijo" {% if theme.chapter_set.all|length > 10 %} style="height:600px; overflow:scroll;" {% endif %}>
+						<div id="TOC" class="fijo" {% if theme.chapter_set.all|length > 10 %} style="height:600px; overflow:scroll;" {% endif %}>
 							<div id="buscador">
 								<form action="" method="post" name="formulario" id="formulario" onSubmit="javascript:searchPrompt(textoabuscar.value, false);">
 									<p><input name="textoabuscar" type="text" class="textarea"></p>
@@ -84,7 +84,7 @@
 							</div>
 
 							<h1><img src="http://www3.gobiernodecanarias.org/medusa/campus/doc/shidix/html/images/general/indice.gif" width="16" height="16">&nbsp;Contenidos</h1>
-							<ul> 
+							<ul id="listTOC"> 
 								<!-- IMPRESION -->
 								<li>
 									<a class="impri" href="javascript:impresion();" 
@@ -129,7 +129,7 @@
 		</div>
 		<div id="footerDiv"> <!-- Pie de pagina -->
 			{#<div id="footerDivInt"><script language="JavaScript1.2">obtenerFooterText();</script></div>#}
-			<div id="footerDivInt">2016 - © Gobierno de Canarias. Consejería de Educación y Universidades.</div>
+			<div id="footerDivInt">2016 - &copy;  Gobierno de Canarias. Consejería de Educación, Universidades, Cultura y Deportes.</div>
 		</div>
 	</div>
 
@@ -151,6 +151,16 @@
 			$('#current').attr('id', '');
 			$('.menu_'+id).attr('id', 'current');
 		}
-	</script>
+        function isTocOverflow()
+        {
+            toc = document.getElementById('TOC');
+            listToc = document.getElementById('listTOC');
+            if (toc.scrollHeight > toc.clientHeight|| toc.scrollWidth > toc.clientWidth)
+            {
+                listToc.style.paddingBottom = '120px';
+            }
+        }
+        isTocOverflow();
+            </script>
 </body>
 </html>
