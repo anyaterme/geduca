@@ -1,83 +1,35 @@
 {% load i18n utils_tags filters %}
 
 <div class="panel panel-default" style="margin-top:1em">
-	<div class="panel-heading">
-	  <h3 class="panel-title"><span class="col-md-9 col-xs-9">{% trans "Temas" %}
-		  	{% if request.user.is_staff %}
-		  		</span><a href="{% url "theme_course_manage" course.id %}" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;"><span class="glyphicon glyphicon-plus-sign"></span></a>
-			{% endif %}
+    <div class="panel-heading">
+        <h3 class="panel-title"><span class="col-md-9 col-xs-9">{% trans "Temas" %}
+                {% if request.user.is_staff %}
+            </span><a href="{% url "theme_course_manage" course.id %}" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;"><span class="glyphicon glyphicon-plus-sign"></span></a>
+            {% endif %}
 
-			<a href="#" class="btn btn-default btn-xs pull-right side_panel_expand" onclick="$('#themes_panel').toggle()">
-				<span class="glyphicon glyphicon-minus"></span>
-			</a>
-		</h3>
-		<div style="clear:both"></div>
-	</div>
-	<div class="panel-body" id="themes_panel" style="">
-		{% if not course.theme_set.all|is_empty %}
-		{% comment %}	
-			<ul class="nav nav-pills nav-stacked">
-			{% for theme in course.theme_set.all %}
-				<li>
-					<div class="row">
-					<div class="col-lg-10 col-sm-10 col-xs-10">
-						<a href="{% url "theme_course_manage" course.id theme.id %}"> {{theme.name}} </a>
-					</div>
-					<div class="col-lg-2 col-sm-2 col-xs-2">
-						<a href="#" class="btn btn-danger btn-xs"  style="font-size:0.8em;color:white;" id="theme_delete_link_{{theme.id}}"><span class="glyphicon glyphicon-trash"></span></a>
-					</div>
-				</div>
-				</li>
-			{% endfor %}
-			</ul>
-		{% endcomment %}
-		<div class="table-responsive">
-			<table class="table table-striped">
-			{% for theme in course.theme_set.all %}
-				<tr>
-					<td>
-						<a href="{% url "theme_course_manage" course.id theme.id %}"> {{theme.name}} </a>
-					</td>
-					<td class="col-lg-2 col-sm-2 col-xs-2">
-						<a href="{% url "theme_up" theme.id  %}" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="theme_up_link_{{theme.id}}">
-							<span class="glyphicon glyphicon-arrow-up"></span>
-						</a>
-						<a href="{% url "theme_down" theme.id %}" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="theme_down_link_{{theme.id}}">
-							<span class="glyphicon glyphicon-arrow-down"></span>
-						</a>
-						<a href="#" class="btn btn-danger btn-xs"  style="font-size:0.8em;color:white;" id="theme_delete_link_{{theme.id}}">
-							<span class="glyphicon glyphicon-trash"></span>
-						</a>
-					</td>
-				</tr>
-			{% endfor %}
-			</table>
-		</div>
-		{% else %}
-			<div class="alert alert-info" style="width:90%; margin:auto">{% trans "No hay temas para este curso" %}</div>
-		{% endif %}
-	</div>
+            <a href="#" class="btn btn-default btn-xs pull-right side_panel_expand" onclick="$('#themes_panel').toggle()">
+                <span class="glyphicon glyphicon-minus"></span>
+            </a>
+        </h3>
+        <div style="clear:both"></div>
+    </div>
+    <div class="panel-body" id="themes_panel" style="">
+        {% if not course.theme_set.all|is_empty %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                {% for theme in course.theme_set.all %}
+                <tr id="row-theme-{{theme.pk}}">
+                    {% include "theme_row.html" with theme=theme %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info" style="width:90%; margin:auto">{% trans "No hay temas para este curso" %}</div>
+        {% endif %}
+    </div>
 </div>
-	
+
 <script>
-{% comment %}
-	{% for theme in course.theme_set.all %}
-		$('#theme_delete_link_{{theme.id}}').click(function() {
-			if (confirm("Si borra un tema se borrarán también todos sus capítulos. ¿Desea continuar?"))
-			{
-				var url = "/es/staff/delete_theme/{{theme.id}}/";
-				$.ajax({ // create an AJAX call...
-					url: url,
-					success: function(response) { // on success..
-						$('#theme_panel_frame').html(response); // update the DIV
-					}
-				});
-			};
-			return false;
-		});
-
-	{% endfor %}
-
-{% endcomment %}
 </script>
 

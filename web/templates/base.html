@@ -2,74 +2,74 @@
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>{% block title %} GEDUCA {% endblock %}</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="Keywords" content="restaurantes, candelaria, dinners, reservations, reservas, cenas, almuerzos, restaurant">
-		<meta name="description" content="{% block description %} {% endblock %}">
+    <head>
+        <title>{% block title %} GEDUCA {% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="Keywords" content="restaurantes, candelaria, dinners, reservations, reservas, cenas, almuerzos, restaurant">
+        <meta name="description" content="{% block description %} {% endblock %}">
+        <meta charset='iso-8859-15'/>
 
-		{#<link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" media="screen"/>#}
-		<link rel="stylesheet" href="{{ STATIC_URL }}css/zebra_bootstrap.css" media="screen"/>
-		<link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/slider.css" media="screen"/>
-		<link rel="stylesheet" href="{{ STATIC_URL }}css/geduca.css" />
-		<!-- Para la plantilla de temas -->
-		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
-	
-		<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
-		{#<script src="http://code.jquery.com/jquery-1.10.2.js"></script>#}
-		<script src="http://code.jquery.com/jquery.js" type="text/javascript"></script>
-		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
+        {#<link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" media="screen"/>#}
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/zebra_bootstrap.css" media="screen"/>
+        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/slider.css" media="screen"/>
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/geduca.css" />
+        <!-- Para la plantilla de temas -->
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
+
+        <!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
+        {#<script src="http://code.jquery.com/jquery-1.10.2.js"></script>#}
+        <script src="http://code.jquery.com/jquery.js" type="text/javascript"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
 
 
 
-		<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-		{% comment %}
-		<script type="text/javascript" src="{{ STATIC_URL }}js/zebra_datepicker.js"></script>	
-		<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
-		{% endcomment %}
-		<!-- Para la plantilla de temas -->
-		<link href="http://www.shidix.com/Public/style_educa.css" rel="stylesheet" />
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+        {% comment %}
+        <script type="text/javascript" src="{{ STATIC_URL }}js/zebra_datepicker.js"></script>	
+        <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+        {% endcomment %}
+        <!-- Para la plantilla de temas -->
+        <link href="http://www.shidix.com/Public/style_educa.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 
-		<script type="text/javascript" src="{{ STATIC_URL }}js/chosen.jquery.min.js"></script>	
-		<link rel="stylesheet" href="{{ STATIC_URL }}css/jqchosen/chosen.css" />
+        <script type="text/javascript" src="{{ STATIC_URL }}js/chosen.jquery.min.js"></script>	
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/jqchosen/chosen.css" />
 
-		<!-- Include all compiled plugins (below), or include individual files as needed -->
-	
-		{% block head_tag %} {% endblock %}
-		 {{ form.media }}
-	</head>
-	<body>
-	<div class="col-md-12">
-		{% include "userena/user_nav.html" %}
-	</div>
-	<div id="body_wrapper">	
-		<header class="row">
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
 
-			{% block header %}
-			{% endblock %}
-		</header>
-		<div class="row" id="content_wrapper_main">
-			{#<div id="content" class="col-lg-10 col-lg-offset-1 col-md-12 col-xs-12">#}
-			<div id="content" class="col-md-10 col-md-offset-1 col-xs-12">
-				<div class="row">
-				{% block breadcumb %} {% endblock %}
-				{% block content %}
+        {% block head_tag %} {% endblock %}
+        {{ form.media }}
+    </head>
+    <body>
+        <div class="col-md-12">
+            {% include "userena/user_nav.html" %}
+        </div>
+        <div id="body_wrapper">	
+            <header class="row">
 
-				{% endblock %}
-				</div>
-			</div>
-		</div>
-		<footer class="" style="background-color:black; margin-top:1em;">
-			{% block footer %}
-				<div style="text-align:center; padding-top:35px; padding-bottom:35px">
-					<img src="{{ STATIC_URL }}images/styles/footlogo.png"/>
-					<p><a href="http://www.shidix.com"><small>www.shidix.com </small></a></p>
-				</div>
-			{% endblock %}
-		</footer>
-	</div>	
-	</body>
+                {% block header %}
+                {% endblock %}
+            </header>
+            <div class="row" id="content_wrapper_main">
+                <div id="content" class="col-md-10 col-md-offset-1 col-xs-12">
+                    <div class="row">
+                        {% block breadcumb %} {% endblock %}
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+            <footer class="" style="background-color:black; margin-top:1em;">
+                {% block footer %}
+                <div style="text-align:center; padding-top:35px; padding-bottom:35px">
+                    <img src="{{ STATIC_URL }}images/styles/footlogo.png"/>
+                    <p><a href="http://www.shidix.com"><small>www.shidix.com </small></a></p>
+                </div>
+                {% endblock %}
+            </footer>
+        </div>	
+        {% include "inputstyles.html" %}
+    </body>
 </html>
 

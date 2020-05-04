@@ -1,0 +1,15 @@
+{% load i18n utils_tags filters %}
+<td>
+    <a href="{% url "theme_course_manage" course.id theme.id %}"> {{theme.name}} </a>
+</td>
+<td class="col-lg-2 col-sm-2 col-xs-2">
+    <a href="#" onclick="{% ark 'theme_up' 'theme_panel_frame' theme_id=theme.pk  %}" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="theme_up_link_{{theme.id}}">
+        <span class="glyphicon glyphicon-arrow-up"></span>
+    </a>
+    <a href="#" onclick="{% ark 'theme_down' 'theme_panel_frame' theme_id=theme.pk  %}" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="theme_down_link_{{theme.id}}">
+        <span class="glyphicon glyphicon-arrow-down"></span>
+    </a>
+    <a href="#" onclick="if (confirm('Al eliminar un tema, va a eliminar tambi&eacute;n todos los cap&iacute;tulos del mismo.')){ {% ark 'delete_theme' 'row-theme-'|addstr:theme.pk theme_id=theme.pk %} }" class="btn btn-danger btn-xs"  style="font-size:0.8em;color:white;" >
+        <i class="glyphicon glyphicon-trash"></i>
+    </a>
+</td>

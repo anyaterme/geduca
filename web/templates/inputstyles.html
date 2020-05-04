@@ -1,0 +1,13 @@
+<script id="input-styles">
+    $('[type="date"]').focusin(function () {if ($(this).prop('type') != 'date') {$(this).datepicker($.datepicker.regional["es"]);$(this).css('padding-top','0px');}});
+    $('input[type!="checkbox"]').addClass('form-control');
+    $('label.checkbox').addClass('form-control');
+    $('textarea').addClass('form-control');
+    $('select').addClass('form-control');
+    $('.error').addClass('has-error');
+    $('.error .help-inline').addClass('text-danger');
+    $('.on-enter-send-form').keyup(function(event){if (event.keyCode==13){$(event.target).parentsUntil('form').parent().submit();}});
+    $('.on-enter-click-button').keyup(function(event){if (event.keyCode==13){id_click=$(event.target).attr('id-click');$('#'+id_click).click();}});
+    $.expr[":"].contains = $.expr.createPseudo(function(arg) { return function (elem) {return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0; }; });
+    $('#input-styles').remove();
+</script>

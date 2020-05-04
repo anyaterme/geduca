@@ -1,0 +1,21 @@
+{% load utils_tags i18n %}
+<table class="table table-hover tabler-stripped">
+    <thead>
+        <tr> 
+            <th>{% trans 'Curso' %}</th>
+            <th>{% trans 'Publicación' %}</th>
+            <th colspan="2">{% trans 'Finalización' %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in courses %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td class="text-nowrap">{{ item.release_date|date:"d-m-Y" }}</td>
+            <td class="text-nowrap">{{ item.end_date|date:"d-m-Y"}}</td>
+            <td class="text-nowrap"><a onclick="return (confirm ('Va a importar este curso. Los contenidos del actual se van a eliminar.'))" href="{% url 'staff-clone-course' item.pk target.pk %}">Importar curso</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+

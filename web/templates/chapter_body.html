@@ -31,7 +31,7 @@
 <script>
 	$('#chapter_body_form').submit(function() { // catch the form's submit event
 		for (instance in CKEDITOR.instances) {
-	   	CKEDITOR.instances[instance].updateElement();
+	   		CKEDITOR.instances[instance].updateElement();
 		}
 		$.ajax({ // create an AJAX call...
 			data: $(this).serialize(), // get the form data

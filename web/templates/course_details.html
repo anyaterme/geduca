@@ -25,158 +25,87 @@ body {  }
 
 {% block content %}
 <div class="container">
-	<div class="row">
-	<div class="row">
-		<h2 class="course_title"><small>{% trans "Curso: " %}</small>{{ course.name }} <small><a href="{% url "edit_course" course.id %}" class="btn btn-primary btn-xs" title="Edit" ><span class="glyphicon glyphicon-pencil"></span></a></small></h2>
-	</div>
-	
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="course_title">
+                <small>{% trans "Curso: " %}</small>
+                {{ course.name }} 
+                <small><a href="{% url "edit_course" course.id %}" class="btn btn-primary btn-xs" title="Edit" ><i class="glyphicon glyphicon-pencil"></i></a></small>&nbsp;
+                <small><a href="#" onclick="{% ark 'staff-clone-course' 'content-import' tocourse=course.pk %}">Importar Curso</a></small>
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default" style="">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {% trans "Ficha del curso" %}
+                        <a href="#" class="btn btn-default btn-xs pull-right side_panel_expand" onclick="$('#course_panel').toggle()">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </a>
+                    </h3>
+                </div>
+                <div class="panel-body" id="course_panel" style="">
+                    <span class="col-md-12 col-xs-12"><strong>{% trans "Categoría" %}</strong>: {{ course.category.name }} </span>
+                    <span class="col-md-12 col-xs-12"><strong>{% trans "Estado: " %}</strong>{% autoescape off %}{{ course.status|get_course_status }} {% endautoescape %}  </span>
+                    <span class="col-md-12 col-xs-12"><strong>{% trans "Fecha de Publicación" %}</strong>: {{ course.release_date }} </span>
+                    {% if course.sb_link|length > 3 %}
+                    <span class="col-md-12 col-xs-12">
+                        <a href="{{ course.sb_link }}">Ir a San Borondón </a>
+                    </span>
+                    {% endif %}
+                    {% if course.aulatic_link|length > 3 %}
+                    <span class="col-md-12 col-xs-12">
+                        <a href="{{ course.aulatic_link }}">Ir a Aulatic </a>
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="panel panel-default" style="margin-top:1em">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="col-md-9 col-xs-9">{% trans "Tutor/Solicitante" %}</span>
+                        <a href="#" class="btn btn-default btn-xs pull-right side_panel_expand" onclick="$('#users_panel').toggle()">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </a>
+                    </h3>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="panel-body" id="users_panel">
+                    {{course.tutor_requestor}}
+                </div>
+            </div>
+            <div id="theme_panel_frame">
+                {% include "theme_panel.html" %}
+            </div>
+        </div>
 
- 	
-	<div class="col-md-3">
-		<div class="panel panel-default" style="">
-			<div class="panel-heading">
-		  		<h3 class="panel-title">
-					{% trans "Ficha del curso" %}
-					<a href="#" class="btn btn-default btn-xs pull-right side_panel_expand" onclick="$('#course_panel').toggle()">
-						<span class="glyphicon glyphicon-minus"></span>
-					</a>
-				</h3>
-			 </div>
-		 	 <div class="panel-body" id="course_panel" style="">
-				<span class="col-md-12 col-xs-12"><strong>{% trans "Categoría" %}</strong>: {{ course.category.name }} </span>
-		  		<span class="col-md-12 col-xs-12"><strong>{% trans "Estado: " %}</strong>{% autoescape off %}{{ course.status|get_course_status }} {% endautoescape %}  </span>
-				<span class="col-md-12 col-xs-12"><strong>{% trans "Fecha de Publicación" %}</strong>: {{ course.release_date }} </span>
-				{% if course.sb_link|length > 3 %}
-					<span class="col-md-12 col-xs-12">
-						<a href="{{ course.sb_link }}">Ir a San Borondón </a>
-		  			</span>
-				{% endif %}
-				{% if course.aulatic_link|length > 3 %}
-					<span class="col-md-12 col-xs-12">
-						<a href="{{ course.aulatic_link }}">Ir a Aulatic </a>
-		  			</span>
-				{% endif %}
-		  </div>
-		</div>
-		<div class="panel panel-default" style="margin-top:1em">
-		<div class="panel-heading">
-		  <h3 class="panel-title"><span class="col-md-9 col-xs-9">{% trans "Participantes" %}
-		  		{% if request.user.is_staff %}
-		  			</span><a href="{% url "user_course_add" course.id %}" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;"><span class="glyphicon glyphicon-plus-sign"></span></a>
-				{% endif %}
-
-				<a href="#" class="btn btn-default btn-xs pull-right side_panel_expand" onclick="$('#users_panel').toggle()">
-					<span class="glyphicon glyphicon-plus"></span>
-				</a>
-			</h3>
-		  <div style="clear:both"></div>
-		  </div>
-		  <div class="panel-body" id="users_panel" style="display: none;">
-		  	  {% if users_course|length > 0 %}	
-			  	<table class="table table-striped">
-					<thead>
-						<th> Nombre </th>
-						<th> Rol  </th>
-						<th> Acc </th>
-					</thead>
-					<tbody>
-					{% for item in users_course %}
-						<tr>
-			  				<td> <a href="{% url 'view_profile' item.user.username %}" class="btn btn-link">{{ item.user.username }}</a>
-</td>
-							<td> {{ item.role|get_role_name }} </td>
-							<td>
-							{% if request.user.is_staff %}
-							<a href="{% url "user_course_delete" item.user.id item.course.id %}" class="btn btn-danger btn-xs btn_delete_user_course" title="Delete" id="adel_{{ item.id }}"><span class="glyphicon glyphicon-trash" id="spdel_{{ item.id }}"></span>
-								</a> 
-							{% endif %}
-						</td>
-			  		{% endfor %}
-					</tbody>
-				</table>
-			  {% else %}
-			  			<div class="alert alert-info" style="width:90%; margin:auto">{% trans "No hay usuarios registrados en el curso" %}</div>
-			  {% endif %}
-		  </div>
-		</div>
-		<div class="panel panel-default" style="margin:0;margin-top:1em;">
- 			 <div class="panel-heading">
-    			<h3 class="panel-title">
-					{% trans "Archivos" %}
-
-					<a href="#" class="btn btn-default btn-xs pull-right side_panel_expand" onclick="$('#files_panel').toggle()">
-						<span class="glyphicon glyphicon-plus"></span>
-					</a>
-				</h3>
-  			</div>
-  			<div class="panel-body" id="files_panel" style="display: none;">
-			{% if files|length > 0 %}
-			<div class="table-responsive" style="max-width: 100%; overflow:hidden"> 
-				
-				<table class="table table-striped" style="font-size:0.9em; max-width: 90%">
-
-					<thead style="bacgkround-color:#f0f0f0">
-						<th>Nombre</th>
-						<th>Tam</th>
-						<th>Fecha</th>
-					</thead>
-					<tbody>
-   		 	{% for file in files %}
-			 		<tr>
-						<td style="max-width: 110px;">
-							<a href="{{ MEDIA_URL }}{{ file.file }}" class="" style="word-wrap: break-word; " download> {{ file.name }}</a>
-						</td>
-						<td>
-							{{ file|file_size }} 
-						</td>
-						<td>
-							{{ file.creation_date|date:"d-m-Y" }}
-						</td>
-					</tr>
-			 {% endfor %}
-			 		</tbody>
-			 </table>
-
-			 </div>
-			 {% else %}
-			 	<div class="row">
-					<p class= "alert alert-info" style="width:90%; margin:auto;" >{% trans "No hay archivos en este curso" %}</p>
-				</div>
-			{% endif %}
- 			 </div>
-		</div>
-
-		<div id="theme_panel_frame">
-			{% include "theme_panel.html" %}
-		</div>
-	</div>
-
-	<div id="" class="col-md-9 col-xs-12">
-		{% include "message_modal.html" %}
-		{% include "messages_tab.html" %}
-	</div>
-	</div>
+        <div id="" class="col-md-9 col-xs-12">
+            {% include "message_modal.html" %}
+            {% include "messages_tab.html" %}
+            <div id="content-import"></div>
+        </div>
+    </div>
 </div>
 <script>
-			$('.btn_delete_user_course').on('click',function(e){
-			var r = confirm("¿Quiere eliminar al usuario de este curso (El usuario no podra volver a acceder al curso)?");
-			if (r == true) {
-	   		return true;
-			}else {
-				return false;
-			}	
-		});
-		$(".side_panel_expand").on('click',function(e){
-			e.preventDefault();
-			if (e.target.tagName == "SPAN" ) 
-			{
-				$(e.target).toggleClass("glyphicon-minus");
-				$(e.target).toggleClass("glyphicon-plus");
-			}
-			$(e.target).find("span").toggleClass("glyphicon-minus");
-			$(e.target).find("span").toggleClass("glyphicon-plus");
-			
-	});
+    $('.btn_delete_user_course').on('click',function(e){
+        var r = confirm("¿Quiere eliminar al usuario de este curso (El usuario no podra volver a acceder al curso)?");
+        if (r == true) {
+            return true;
+        }else {
+            return false;
+        }	
+    });
+$(".side_panel_expand").on('click',function(e){
+    e.preventDefault();
+    if (e.target.tagName == "SPAN" ) 
+    {
+        $(e.target).toggleClass("glyphicon-minus");
+        $(e.target).toggleClass("glyphicon-plus");
+    }
+    $(e.target).find("span").toggleClass("glyphicon-minus");
+    $(e.target).find("span").toggleClass("glyphicon-plus");
 
+});
 </script>
 {% endblock %}

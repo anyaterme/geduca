@@ -2,6 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template, render_to_string
 from django.utils.html import strip_tags
+from django.conf import settings
+import random, string, os, datetime
 
 
 def web_send_mail(template_path, context, subject, from_email ,to):
@@ -12,7 +14,6 @@ def web_send_mail(template_path, context, subject, from_email ,to):
 	print msg.send()
 
 def get_element (model,pk):
-
 	response = {}
 	try :
 		response = model.objects.get(pk=int(pk))
@@ -20,3 +21,14 @@ def get_element (model,pk):
 		response = False;
 
 	return response 
+
+def random_str(length=8):
+   letters = string.ascii_uppercase
+   return ''.join(random.choice(letters) for i in range(length))
+
+
+def mylog(message):
+    logfile = open(os.path.join(settings.PROJECT_ROOT,"debug.log"), "a", 0)
+    message = str(message)
+    logfile.write("%s:> %s\n" % (datetime.datetime.now(), message))
+    logfile.close()
