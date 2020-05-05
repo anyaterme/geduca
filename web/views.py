@@ -507,7 +507,6 @@ def resources_list (request):
 
 
 def resource_delete(request, resource_id):
-	
 	if request.user.is_authenticated(): 
 		resource = get_element(ResourceFile,resource_id)
 		if resource != False:

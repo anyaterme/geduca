@@ -147,6 +147,7 @@ class Course (Base):
     cep_link = models.CharField(max_length=250, verbose_name=_("Enlace CEP"), default="",blank=True)
     tag = models.ManyToManyField(Tag, verbose_name=_("Search tag"), related_name="tag_course", null=True, help_text="Las etiquetas se asignan automaticamente al guardar")
     tutor_requestor = models.TextField(verbose_name=_("Tutor y Solicitante"), default="", blank=True)
+    fix_parents = models.BooleanField(verbose_name=_("Fix Parents"),default=False)
 
     def __unicode__(self):
         return "%s-%s"%(self.code, self.name)
@@ -317,6 +318,9 @@ class Chapter(Base):
         else:
             return (self.order, -1000)
 
+    def childrens(self) :
+        return Chapter.objects.filter(parent = self)
+
     class Meta:
         ordering = ["order"]
         verbose_name = _("Capítulo")
@@ -337,6 +341,11 @@ class Theme(Base):
             chapters = sorted(chapters, key=lambda x : x.get_order())
         except Exception as e:
             mylog(e)
+        return chapters
+
+    @property
+    def chapter_root(self):
+        chapters = Chapter.objects.filter(parent__isnull = True, theme=self)
         return chapters
     
     class Meta:

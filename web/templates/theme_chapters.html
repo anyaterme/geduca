@@ -22,47 +22,8 @@
 
         <h5> Listado de Capítulos <a href="#" class="btn btn-primary btn-xs" onclick="{% ark 'fix_chapter_parents' 'chapter_frame' theme_id=theme.pk %}" ><i class="glyphicon glyphicon-sort"></i></a></h5>
         <hr>
-        {% for chapter in theme.chapter_in_order %}
-        <div id="chapter_name_no_edit_{{chapter.id}}">
-            <ul class="nav nav-pills nav-stacked" id="menu">
-                <li class="ui-state-default chapter_li " style="{% if chapter.parent %} margin-left:30px; {% endif %} {% if forloop.counter|divisibleby:"2" %} background-color: #f0f0f0;{% endif %}"> 
-
-                    <div class="row">
-                        <a href="#" id="chapter_body_edit_link_{{chapter.id}}" class="chapter_title_li">{{ chapter.name }}</a>
-                    </div>
-                    <div class="row chapter_actionbar">
-                        <i class="col-lg-1 col-sm-1 col-xs-1">
-                            <a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_name_edit_link_{{chapter.id}}"><i class="glyphicon glyphicon-edit"></i></a>
-                        </i>
-
-                        <i class="col-lg-1 col-sm-1 col-xs-1"> <a href="#" class="btn btn-success btn-xs" onclick="{% ark 'chapter_up' 'chapter_frame' chapter_id=chapter.pk %}; return false;" ><i class="glyphicon glyphicon-arrow-up"></i></a> </i>
-                        <i class="col-lg-1 col-sm-1 col-xs-1">
-                            <a href="#" class="btn btn-success btn-xs" onclick="{% ark 'chapter_down' 'chapter_frame' chapter_id=chapter.pk %}; return false;"><i class="glyphicon glyphicon-arrow-down"></i></a>
-                        </i>
-                        <i class="col-lg-1 col-sm-1 col-xs-1">
-                            <a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_left_link_{{chapter.id}}"><i class="glyphicon glyphicon-arrow-left"></i></a>
-                        </i>
-                        <i class="col-lg-1 col-sm-1 col-xs-1">
-                            <a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_right_link_{{chapter.id}}"><i class="glyphicon glyphicon-arrow-right"></i></a>
-                        </i>
-                        <i class="col-lg-1 col-sm-1 col-xs-1">
-                            <a href="#" class="btn btn-danger btn-xs"  data-chapter="{{ chapter.name }}" style="font-size:0.8em;color:white;" id="chapter_name_delete_link_{{chapter.id}}"><i class="glyphicon glyphicon-trash"></i></a>
-                        </i>
-
-                    </div>
-                    <div style="clear:both"></div>
-                </li>
-            </ul>
-        </div>
-        <div id="chapter_name_edit_{{chapter.id}}" style="display: none;">
-            <form method='post' action='{% url "save_chapter" %}' class='form-inline' id='chapter_name_form_{{chapter.id}}'> 
-                {% csrf_token %} 
-                <input type='text' class='form-control' id='name' name='name' placeholder='Nombre del capítulo' value='{{ chapter.name }}'> 
-                <input type='hidden' value='{{ chapter.id }}' name='chapter_id' id='id_chapter'/> 
-                <input type="hidden" value="{{ theme.id }}" name="theme_id" id="id_theme"/>
-                <input type='submit' value='Guardar' name='submit' class='btn btn-primary'/> 
-            </form> 
-        </div>
+        {% for chapter in theme.chapter_root %}
+          {% include "chapter_row.html" with chapter=chapter theme=theme counter=0%}
         {% endfor %}
 
     </div>
@@ -140,7 +101,6 @@ $('#chapter_up_link_{{chapter.id}}').click(function() {
     });
     return false;
 });
-{%endcomment%}
 
 $('#chapter_down_link_{{chapter.id}}').click(function() {
     var url = "{% url "chapter_down" chapter.id %}";
@@ -152,6 +112,7 @@ $('#chapter_down_link_{{chapter.id}}').click(function() {
     });
     return false;
 });
+{%endcomment%}
 
 $('#chapter_left_link_{{chapter.id}}').click(function() {
     var url = "{% url "chapter_left" chapter.id %}";
@@ -176,5 +137,8 @@ $('#chapter_right_link_{{chapter.id}}').click(function() {
 });
 
 {% endfor %}
+
+$('li.chapter_li:even').css('background','#f0f0f0');
+$('li.chapter_li:odd').css('border','solid 1px #f0f0f0');
 </script>
 {% endif%}

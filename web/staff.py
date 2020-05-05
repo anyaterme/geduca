@@ -278,10 +278,12 @@ def save_theme(request):
          order = Theme.objects.all().aggregate(Max('order'))['order__max']
          order = 0 if order == None else (order + 1)
          theme = Theme(name=request.POST["name"], course=course, order=order)
+         theme.fix_parents = True
          theme.save()
     else:
        theme = Theme.objects.get(pk=request.POST["theme_id"])
        theme.name = request.POST["name"]
+       theme.fix_parents = True
        theme.save()
     context = {'course': course, 'theme': theme}
     return render(request, 'course_theme.html', context)
@@ -566,6 +568,8 @@ def fix_chapter_parents(request, theme_id):
             chapter.parent = parent
             chapter.save()
 
+    theme.fix_parents = True
+    theme.save()
     return render(request, 'theme_chapters.html', {'theme':theme})
 
 
