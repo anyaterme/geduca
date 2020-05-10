@@ -146,7 +146,8 @@ class Course (Base):
     aulatic_link= models.CharField(max_length=250, verbose_name=_("Enlace Aulatic"), default="",blank=True)
     cep_link = models.CharField(max_length=250, verbose_name=_("Enlace CEP"), default="",blank=True)
     tag = models.ManyToManyField(Tag, verbose_name=_("Search tag"), related_name="tag_course", null=True, help_text="Las etiquetas se asignan automaticamente al guardar")
-    tutor_requestor = models.TextField(verbose_name=_("Tutor y Solicitante"), default="", blank=True)
+    tutor= models.TextField(verbose_name=_("Tutor"), default="", blank=True)
+    requestor= models.TextField(verbose_name=_("Solicitante"), default="", blank=True)
     fix_parents = models.BooleanField(verbose_name=_("Fix Parents"),default=False)
 
     def __unicode__(self):

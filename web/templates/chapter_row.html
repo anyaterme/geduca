@@ -1,0 +1,43 @@
+{% load i18n utils_tags %}
+        <div id="chapter_name_no_edit_{{chapter.id}}">
+            <ul class="nav nav-pills nav-stacked" id="menu">
+                <li class="ui-state-default chapter_li " style="margin-left:{{counter}}px;"> 
+                    <div class="row info-chapter">
+                        <div class="col-md-12">
+                            <a href="#" id="chapter_body_edit_link_{{chapter.id}}" class="chapter_title_li">{{ chapter.name }}</a>
+                        </div>
+                        <div class="col-md-12 text-right">
+                                    <a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_name_edit_link_{{chapter.id}}"><i class="glyphicon glyphicon-edit"></i></a>
+
+                                    <a href="#" class="btn btn-success btn-xs" onclick="{% ark 'chapter_up' 'chapter_frame' chapter_id=chapter.pk %}; return false;" ><i class="glyphicon glyphicon-arrow-up"></i></a>
+                                    <a href="#" class="btn btn-success btn-xs" onclick="{% ark 'chapter_down' 'chapter_frame' chapter_id=chapter.pk %}; return false;"><i class="glyphicon glyphicon-arrow-down"></i></a>
+                                    <a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_left_link_{{chapter.id}}"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                                    <a href="#" class="btn btn-success btn-xs"  style="font-size:0.8em;color:white;" id="chapter_right_link_{{chapter.id}}"><i class="glyphicon glyphicon-arrow-right"></i></a>
+                                    <a href="#" class="btn btn-danger btn-xs"  data-chapter="{{ chapter.name }}" style="font-size:0.8em;color:white;" id="chapter_name_delete_link_{{chapter.id}}"><i class="glyphicon glyphicon-trash"></i></a>
+
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                </li>
+            </ul>
+        </div>
+        <div id="chapter_name_edit_{{chapter.id}}" style="display: none;">
+            <form method='post' action='{% url "save_chapter" %}' class='form-inline' id='chapter_name_form_{{chapter.id}}'> 
+                {% csrf_token %} 
+                <input type='text' class='form-control' id='name' name='name' placeholder='Nombre del capítulo' value='{{ chapter.name }}'> 
+                <input type='hidden' value='{{ chapter.id }}' name='chapter_id' id='id_chapter'/> 
+                <input type="hidden" value="{{ theme.id }}" name="theme_id" id="id_theme"/>
+                <input type='submit' value='Guardar' name='submit' class='btn btn-primary'/> 
+            </form> 
+        </div>
+                        {% if chapter.childrens|length > 0 %}
+                        <div class ="row">
+                            <div class="col-md-12">
+                                {% for child in chapter.childrens %}
+                                    {% with chapter=child theme=theme template_name='chapter_row.html' counter=counter|add:30%}
+                                    {% include template_name %}
+                                    {% endwith %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}

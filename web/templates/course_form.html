@@ -59,11 +59,18 @@
                     {{ form.status }}
                     </p>
                 </div>
-				<div class="form-group {% if form.tutor_requestor.errors %} has-error{% endif %}">
-					{% if form.tutor_requestor.errors %}<span class="text-danger">{{ form.tutor_requestor.errors }}</span>{% endif %}
-					<label for="id_tutor_requestor" class="col-lg-2 col-md-2 col-xs-12">{{ form.tutor_requestor.label_tag }}:</label>
+				<div class="form-group {% if form.tutor.errors %} has-error{% endif %}">
+					{% if form.tutor.errors %}<span class="text-danger">{{ form.tutor.errors }}</span>{% endif %}
+					<label for="id_tutor" class="col-lg-2 col-md-2 col-xs-12">{{ form.tutor.label_tag }}:</label>
 					<p class="col-lg-10 col-md-10 col-xs-12">
-							{{ form.tutor_requestor }}
+							{{ form.tutor }}
+					</p>
+				</div>
+				<div class="form-group {% if form.requestor.errors %} has-error{% endif %}">
+					{% if form.requestor.errors %}<span class="text-danger">{{ form.requestor.errors }}</span>{% endif %}
+					<label for="id_requestor" class="col-lg-2 col-md-2 col-xs-12">{{ form.requestor.label_tag }}:</label>
+					<p class="col-lg-10 col-md-10 col-xs-12">
+							{{ form.requestor }}
 					</p>
 				</div>
                 <div class="form-group {% if form.sb_link.errors %} has-error{% endif %}">

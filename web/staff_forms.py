@@ -18,7 +18,7 @@ class CourseForm(forms.ModelForm):
 
     class Meta:
         model = Course
-        fields = ['code','name','category','lapse','release_date','end_date','status','sb_link','aulatic_link','cep_link','tutor_requestor']
+        fields = ['code','name','category','lapse','release_date','end_date','status','sb_link','aulatic_link','cep_link','tutor', 'requestor']
 
 class CourseUserForm(forms.ModelForm):
     class Meta:
