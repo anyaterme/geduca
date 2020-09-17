@@ -107,7 +107,7 @@
                 <td class="course_list_lnk">
                     <div><a href="{% url "course_details" item.id %}" class="btn-link" title="">{{ item.name }}</a></div></td>
                 {#	<td><span class="badge">{{ item|get_unread_messages:request.user }}</span></td>#}
-                <td>{{ item.tutor_requestor}}</td>
+                <td><strong><small>Solicitante: </small></strong>{{ item.requestor}}&nbsp;<strong><small>Tutor: </small></strong></td>
                 <td>{{ item.release_date|date:"d-m-Y" }}</td>
                 <td>{{ item.end_date|date:"d-m-Y"}}</td>
                 {#	<td>{{ item.lapse }}</td> #}
