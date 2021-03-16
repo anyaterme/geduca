@@ -460,7 +460,8 @@ def download(request, theme_id, theme_template):
     zf = zipfile.ZipFile(s, "w")
 
     #agregamos los ficheros al .zip
-    zf = add_to_zip(zf, filenames, zip_subdir, theme_path)
+    aux = [notilde(f) for f in filenames]
+    zf = add_to_zip(zf, aux, zip_subdir, theme_path)
 
     # Grab ZIP file from in-memory, make response with correct MIME-type
     resp = HttpResponse(s.getvalue(), mimetype = "application/x-zip-compressed")
@@ -481,7 +482,7 @@ def get_theme_files(theme, theme_path, theme_template):
 
     #Reemplazamos la ruta a las imagenes para que funciones en el directorio comprimido
     for img in m:
-        theme_str = theme_str.replace("/media/"+img, "./imgs/" + os.path.basename(img.encode('utf-8')))
+        theme_str = theme_str.replace("/media/"+img, "./imgs/" + notilde(os.path.basename(img.encode('utf-8'))))
 
     #sb = re.findall('src="(.+?/sanborondon/.+?)"', theme_str)
     #for img in sb:
@@ -496,9 +497,15 @@ def get_theme_files(theme, theme_path, theme_template):
     return page_files
 
 def replace_charset(theme_str):
+    #theme_str = theme_str.replace("á","&aacute;").replace("é","&eacute;").replace("í","&iacute;").replace("ó","&oacute;").replace("ú","&uacute;")
     theme_str = theme_str.replace("á","&aacute;").replace("é","&eacute;").replace("í","&iacute;").replace("ó","&oacute;").replace("ú","&uacute;")
-    #theme_str = theme_str.replace("¿","&iquest;").replace("¡","&iexcl;")
+    theme_str = theme_str.replace("¿","&iquest;").replace("¡","&iexcl;")
+    
+    return theme_str
 
+def notilde(theme_str):
+    theme_str = theme_str.replace("á","").replace("é","").replace("í","").replace("ó","").replace("ú","")
+    #theme_str = theme_str.replace("¿","&iquest;").replace("¡","&iexcl;")
     return theme_str
 
 def add_to_zip(zf, filenames, zip_subdir, theme_path):
