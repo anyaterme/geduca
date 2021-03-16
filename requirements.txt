@@ -1,4 +1,4 @@
-Django==1.5.5
+Django==1.11.29
 django-admin-tools==0.5.2
 django-ckeditor==4.0.2
 django-guardian==1.2.5
